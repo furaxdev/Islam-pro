@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.expo/
+*.log
+.DS_Store
+backend/.env
+backend/__pycache__/
+backend/*.egg-info/
+.venv/
+Islamic App Source.zip

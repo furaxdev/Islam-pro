@@ -1,0 +1,29 @@
+services:
+  # Backend API - FastAPI
+  - type: web
+    name: islam-pro-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: MONGO_URL
+        sync: false
+      - key: DB_NAME
+        value: islam_pro_db
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+  # Frontend - Expo Web (Static Site)
+  - type: web
+    name: islam-pro-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npx expo export --platform web
+    staticPublishPath: dist
+    envVars:
+      - key: EXPO_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: islam-pro-backend
+          property: host
