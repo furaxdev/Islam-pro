@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .expo/
+.metro-cache/
 *.log
 .DS_Store
 backend/.env
