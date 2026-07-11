@@ -9,7 +9,7 @@ import TasbihCounter from '../../src/components/TasbihCounter';
 import Touchable from '../../src/components/Touchable';
 
 export default function DhikrScreen() {
-  const { t, darkMode } = useApp();
+  const { t, darkMode, language } = useApp();
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr>(dhikrList[0]);
 
   const bgColor = darkMode ? colors.backgroundDark : colors.backgroundLight;
@@ -17,13 +17,16 @@ export default function DhikrScreen() {
   const textColor = darkMode ? colors.textDark : colors.textLight;
   const textSecondary = darkMode ? colors.textSecondaryDark : colors.textSecondaryLight;
 
+  const dhikrLabel = (dhikr: Dhikr) => (language === 'ar' ? dhikr.nameAr : dhikr.transliteration);
+  const dhikrText = (dhikr: Dhikr) => (language === 'ar' ? dhikr.textAr : dhikr.transliteration);
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={[styles.title, { color: textColor }]}>Tasbih</Text>
+          <Text style={[styles.title, { color: textColor }]}>{t('tasbih')}</Text>
           <Text style={[styles.subtitle, { color: textSecondary }]}>
-            Compteur de dhikr
+            {t('dhikrCounter')}
           </Text>
         </View>
 
@@ -34,32 +37,33 @@ export default function DhikrScreen() {
           style={styles.dhikrScroll}
           contentContainerStyle={styles.dhikrContainer}
         >
-          {dhikrList.map((dhikr) => (
-            <Touchable
-              key={dhikr.id}
-              style={[
-                styles.dhikrTab,
-                {
-                  backgroundColor: selectedDhikr.id === dhikr.id ? dhikr.color : cardBg,
-                  borderColor: dhikr.color,
-                  borderWidth: selectedDhikr.id === dhikr.id ? 0 : 1,
-                },
-              ]}
-              onPress={() => setSelectedDhikr(dhikr)}
-            >
-              <Text
+          {dhikrList.map((dhikr) => {
+            const isSelected = selectedDhikr.id === dhikr.id;
+            return (
+              <Touchable
+                key={dhikr.id}
                 style={[
-                  styles.dhikrTabText,
+                  styles.dhikrTab,
                   {
-                    color: selectedDhikr.id === dhikr.id ? '#FFF' : textColor,
+                    backgroundColor: isSelected ? colors.gold : cardBg,
+                    borderColor: isSelected ? colors.gold : textSecondary + '40',
+                    borderWidth: 1,
                   },
                 ]}
-                numberOfLines={1}
+                onPress={() => setSelectedDhikr(dhikr)}
               >
-                {dhikr.nameAr}
-              </Text>
-            </Touchable>
-          ))}
+                <Text
+                  style={[
+                    styles.dhikrTabText,
+                    { color: isSelected ? colors.backgroundDark : textColor },
+                  ]}
+                  numberOfLines={1}
+                >
+                  {dhikrLabel(dhikr)}
+                </Text>
+              </Touchable>
+            );
+          })}
         </ScrollView>
 
         {/* Counter */}
@@ -70,17 +74,17 @@ export default function DhikrScreen() {
         {/* Quick dhikr buttons */}
         <View style={[styles.quickSection, { backgroundColor: cardBg }, shadows.sm]}>
           <Text style={[styles.quickTitle, { color: textColor }]}>
-            Raccourcis
+            {t('shortcuts')}
           </Text>
           <View style={styles.quickGrid}>
             {dhikrList.map((dhikr) => (
               <Touchable
                 key={dhikr.id}
-                style={[styles.quickButton, { backgroundColor: dhikr.color + '20' }]}
+                style={[styles.quickButton, { backgroundColor: bgColor, borderColor: textSecondary + '30' }]}
                 onPress={() => setSelectedDhikr(dhikr)}
               >
-                <Text style={[styles.quickButtonText, { color: dhikr.color }]}>
-                  {dhikr.textAr}
+                <Text style={[styles.quickButtonText, { color: colors.gold }]} numberOfLines={2}>
+                  {dhikrText(dhikr)}
                 </Text>
                 <Text style={[styles.quickButtonTarget, { color: textSecondary }]}>
                   x{dhikr.targetCount}
@@ -107,6 +111,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.full,
     minWidth: 80,
+    maxWidth: 170,
     alignItems: 'center',
   },
   dhikrTabText: { fontSize: 14, fontWeight: '600' },
@@ -118,8 +123,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     borderRadius: borderRadius.md,
+    borderWidth: 1,
     alignItems: 'center',
+    minWidth: 90,
+    maxWidth: 150,
   },
-  quickButtonText: { fontSize: 16, fontWeight: '600' },
+  quickButtonText: { fontSize: 13, fontWeight: '600', textAlign: 'center' },
   quickButtonTarget: { fontSize: 11 },
 });

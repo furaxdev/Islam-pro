@@ -65,6 +65,21 @@ export const translations = {
     retry: 'Réessayer',
     minutes: 'min',
     hours: 'h',
+
+    // Dhikr
+    tasbih: 'Tasbih',
+    dhikrCounter: 'Compteur de dhikr',
+    shortcuts: 'Raccourcis',
+    reset: 'Réinitialiser',
+    total: 'Total',
+    cycle: 'cycle',
+    cycles: 'cycles',
+    meaningSubhanallah: 'Gloire à Allah',
+    meaningAlhamdulillah: 'Louange à Allah',
+    meaningAllahuAkbar: 'Allah est le plus Grand',
+    meaningLaIlahaIllallah: "Il n'y a de divinité qu'Allah",
+    meaningAstaghfirullah: 'Je demande pardon à Allah',
+    meaningLaHawla: "Il n'y a de force ni de puissance qu'en Allah",
   },
   ar: {
     // Navigation
@@ -132,6 +147,21 @@ export const translations = {
     retry: 'إعادة المحاولة',
     minutes: 'د',
     hours: 'س',
+
+    // Dhikr
+    tasbih: 'التسبيح',
+    dhikrCounter: 'عداد الذكر',
+    shortcuts: 'اختصارات',
+    reset: 'إعادة تعيين',
+    total: 'المجموع',
+    cycle: 'دورة',
+    cycles: 'دورات',
+    meaningSubhanallah: 'سبحان الله',
+    meaningAlhamdulillah: 'الحمد لله',
+    meaningAllahuAkbar: 'الله أكبر',
+    meaningLaIlahaIllallah: 'لا إله إلا الله',
+    meaningAstaghfirullah: 'أستغفر الله',
+    meaningLaHawla: 'لا حول ولا قوة إلا بالله',
   },
   en: {
     // Navigation
@@ -199,6 +229,21 @@ export const translations = {
     retry: 'Retry',
     minutes: 'min',
     hours: 'h',
+
+    // Dhikr
+    tasbih: 'Tasbih',
+    dhikrCounter: 'Dhikr Counter',
+    shortcuts: 'Shortcuts',
+    reset: 'Reset',
+    total: 'Total',
+    cycle: 'cycle',
+    cycles: 'cycles',
+    meaningSubhanallah: 'Glory be to Allah',
+    meaningAlhamdulillah: 'Praise be to Allah',
+    meaningAllahuAkbar: 'Allah is the Greatest',
+    meaningLaIlahaIllallah: 'There is no god but Allah',
+    meaningAstaghfirullah: 'I seek forgiveness from Allah',
+    meaningLaHawla: 'There is no power nor strength except with Allah',
   },
 };
 

@@ -4,6 +4,7 @@ import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius } from '../constants/theme';
 import { Dhikr } from '../services/dhikrService';
+import { useApp } from '../context/AppContext';
 
 interface TasbihCounterProps {
   dhikr: Dhikr;
@@ -11,6 +12,7 @@ interface TasbihCounterProps {
 }
 
 export default function TasbihCounter({ dhikr, darkMode }: TasbihCounterProps) {
+  const { t, language } = useApp();
   const [count, setCount] = useState(0);
 
   useEffect(() => {
@@ -37,15 +39,17 @@ export default function TasbihCounter({ dhikr, darkMode }: TasbihCounterProps) {
 
   return (
     <View style={[styles.card, { backgroundColor: cardBg }]}>
-      <Text style={[styles.arabic, { color: dhikr.color }]}>{dhikr.textAr}</Text>
-      <Text style={[styles.meaning, { color: textSecondary }]}>{dhikr.meaning}</Text>
+      <Text style={[styles.arabic, { color: colors.gold }]}>
+        {language === 'ar' ? dhikr.textAr : dhikr.transliteration}
+      </Text>
+      <Text style={[styles.meaning, { color: textSecondary }]}>{t(dhikr.meaningKey)}</Text>
 
       <View style={[styles.progressRing, { borderColor: textSecondary + '30' }]}>
         <View
           style={[
             styles.progressFill,
             {
-              borderColor: dhikr.color,
+              borderColor: colors.gold,
               transform: [{ rotate: `${progress * 360}deg` }],
             },
           ]}
@@ -57,12 +61,12 @@ export default function TasbihCounter({ dhikr, darkMode }: TasbihCounterProps) {
       </View>
 
       <Text style={[styles.totalText, { color: textSecondary }]}>
-        Total: {count} {cyclesCompleted > 0 ? `(${cyclesCompleted} cycle${cyclesCompleted > 1 ? 's' : ''})` : ''}
+        {t('total')}: {count} {cyclesCompleted > 0 ? `(${cyclesCompleted} ${cyclesCompleted > 1 ? t('cycles') : t('cycle')})` : ''}
       </Text>
 
       <TouchableOpacity style={[styles.resetButton, { borderColor: textSecondary + '40' }]} onPress={reset}>
         <Ionicons name="refresh" size={18} color={textSecondary} />
-        <Text style={[styles.resetText, { color: textSecondary }]}>Réinitialiser</Text>
+        <Text style={[styles.resetText, { color: textSecondary }]}>{t('reset')}</Text>
       </TouchableOpacity>
     </View>
   );

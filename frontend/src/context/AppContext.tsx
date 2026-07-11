@@ -31,6 +31,7 @@ interface AppContextType {
   setPrayerNotifications: (value: boolean) => void;
   adhanSound: boolean;
   setAdhanSound: (value: boolean) => void;
+  isReady: boolean;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -45,9 +46,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [fontSize, setFontSizeState] = useState<'small' | 'medium' | 'large'>('medium');
   const [prayerNotifications, setPrayerNotificationsState] = useState(true);
   const [adhanSound, setAdhanSoundState] = useState(true);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    loadSettings();
+    // AppLaunchSplash owns the minimum on-screen duration and exit animation;
+    // here we just flag once the saved settings have actually loaded.
+    loadSettings().then(() => setIsReady(true));
   }, []);
 
   const loadSettings = async () => {
@@ -185,6 +189,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setPrayerNotifications,
         adhanSound,
         setAdhanSound,
+        isReady,
       }}
     >
       {children}

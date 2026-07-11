@@ -18,13 +18,23 @@ function angleFromMagnetometer({ x, y }: { x: number; y: number; z: number }): n
 
 export default function QiblaCompass({ direction, darkMode }: QiblaCompassProps) {
   const [heading, setHeading] = useState(0);
+  const [compassAvailable, setCompassAvailable] = useState<boolean | null>(null);
 
   useEffect(() => {
-    Magnetometer.setUpdateInterval(150);
-    const subscription = Magnetometer.addListener((data) => {
-      setHeading(angleFromMagnetometer(data));
-    });
-    return () => subscription.remove();
+    let subscription: { remove: () => void } | undefined;
+
+    Magnetometer.isAvailableAsync()
+      .then((available) => {
+        setCompassAvailable(available);
+        if (!available) return;
+        Magnetometer.setUpdateInterval(150);
+        subscription = Magnetometer.addListener((data) => {
+          setHeading(angleFromMagnetometer(data));
+        });
+      })
+      .catch(() => setCompassAvailable(false));
+
+    return () => subscription?.remove();
   }, []);
 
   const textColor = darkMode ? colors.textDark : colors.textLight;
@@ -35,6 +45,28 @@ export default function QiblaCompass({ direction, darkMode }: QiblaCompassProps)
   }
 
   const needleRotation = direction.angle - heading;
+
+  if (compassAvailable === false) {
+    return (
+      <View style={styles.container}>
+        <View style={[styles.compass, { borderColor: textSecondary + '40' }]}>
+          <Ionicons name="warning" size={32} color={colors.error} />
+        </View>
+        <Text style={[styles.angleText, { color: textColor }]}>
+          Boussole non disponible sur cet appareil
+        </Text>
+        <Text style={[styles.distanceText, { color: textSecondary }]}>
+          La direction de la Qibla est à {Math.round(direction.angle)}° depuis le Nord
+        </Text>
+        <Text style={[styles.distanceText, { color: textSecondary }]}>
+          {Math.round(direction.distanceKm)} km de la Kaaba
+        </Text>
+        <Text style={[styles.sorryText, { color: textSecondary }]}>
+          Nous sommes désolés pour cet imprévu. Qu'Allah vous soutienne.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -87,4 +119,5 @@ const styles = StyleSheet.create({
   centerDot: { width: 10, height: 10, borderRadius: 5, position: 'absolute' },
   angleText: { fontSize: 20, fontWeight: '700', marginTop: spacing.lg },
   distanceText: { fontSize: 14, marginTop: spacing.xs },
+  sorryText: { fontSize: 13, marginTop: spacing.md, fontStyle: 'italic', textAlign: 'center' },
 });
