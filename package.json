@@ -1,0 +1,14 @@
+{
+  "name": "islam-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Islam Pro — monorepo. The Expo app lives in frontend/, the FastAPI service in backend/.",
+  "scripts": {
+    "postinstall": "cd frontend && yarn install",
+    "start": "cd frontend && yarn start",
+    "web": "cd frontend && yarn web",
+    "ios": "cd frontend && yarn ios",
+    "android": "cd frontend && yarn android",
+    "lint": "cd frontend && yarn lint"
+  }
+}
