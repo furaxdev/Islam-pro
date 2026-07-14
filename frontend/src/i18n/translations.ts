@@ -29,6 +29,9 @@ export const translations = {
     location: 'Localisation',
     useGPS: 'Utiliser GPS',
     selectCity: 'Sélectionner une ville',
+    searchCityPlaceholder: 'Rechercher une ville...',
+    searchFor: 'Rechercher',
+    cityNotFound: 'Ville introuvable, réessayez',
     
     // Quran
     readQuran: 'Lire le Coran',
@@ -111,6 +114,9 @@ export const translations = {
     location: 'الموقع',
     useGPS: 'استخدام GPS',
     selectCity: 'اختر مدينة',
+    searchCityPlaceholder: 'ابحث عن مدينة...',
+    searchFor: 'ابحث عن',
+    cityNotFound: 'المدينة غير موجودة، حاول مرة أخرى',
     
     // Quran
     readQuran: 'قراءة القرآن',
@@ -193,6 +199,9 @@ export const translations = {
     location: 'Location',
     useGPS: 'Use GPS',
     selectCity: 'Select City',
+    searchCityPlaceholder: 'Search for a city...',
+    searchFor: 'Search',
+    cityNotFound: 'City not found, try again',
     
     // Quran
     readQuran: 'Read Quran',

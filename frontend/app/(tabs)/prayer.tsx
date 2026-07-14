@@ -78,6 +78,7 @@ export default function PrayerScreen() {
   const [showCityModal, setShowCityModal] = useState(false);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [notFound, setNotFound] = useState(false);
 
   const bgColor = darkMode ? colors.backgroundDark : colors.backgroundLight;
   const cardBg = darkMode ? colors.cardDark : colors.cardLight;
@@ -142,12 +143,51 @@ export default function PrayerScreen() {
       setLoading(true);
       setShowCityModal(false);
       setSelectedCity(`${city}, ${country}`);
-      
+
       const data = await getPrayerTimesByCity(city, country);
       setPrayerTimes(data.timings);
       setHijriDate(data.hijri);
     } catch (error) {
       console.error('Error loading prayer times for city:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const searchTypedCity = async () => {
+    const query = searchQuery.trim();
+    if (!query) return;
+    try {
+      setLoading(true);
+      setShowCityModal(false);
+      setNotFound(false);
+
+      // Geocode any place name (even small villages) into coordinates.
+      const results = await withTimeout(
+        Location.geocodeAsync(query),
+        8000,
+        'Geocoding timed out'
+      );
+
+      if (!results || results.length === 0) {
+        setNotFound(true);
+        return;
+      }
+
+      const { latitude, longitude } = results[0];
+      setSelectedCity(query);
+      setLocation({ latitude, longitude });
+
+      const data = await withTimeout(
+        getPrayerTimesByCoords(latitude, longitude),
+        8000,
+        'Prayer times request timed out'
+      );
+      setPrayerTimes(data.timings);
+      setHijriDate(data.hijri);
+    } catch (error) {
+      console.error('Error searching city:', error);
+      setNotFound(true);
     } finally {
       setLoading(false);
     }
@@ -218,6 +258,13 @@ export default function PrayerScreen() {
         </View>
       )}
 
+      {notFound && (
+        <View style={[styles.notFoundBadge, { backgroundColor: colors.error }]}>
+          <Ionicons name="alert-circle" size={16} color="#FFF" />
+          <Text style={styles.selectedCityText}>{t('cityNotFound')}</Text>
+        </View>
+      )}
+
       {loading ? (
         <LoadingSplash darkMode={darkMode} label={t('loading')} />
       ) : (
@@ -279,15 +326,31 @@ export default function PrayerScreen() {
             
             <TextInput
               style={[styles.searchInput, { backgroundColor: bgColor, color: textColor }]}
-              placeholder="Search city..."
+              placeholder={t('searchCityPlaceholder')}
               placeholderTextColor={textSecondary}
               value={searchQuery}
               onChangeText={setSearchQuery}
+              onSubmitEditing={searchTypedCity}
+              returnKeyType="search"
+              autoCorrect={false}
             />
-            
+
+            {searchQuery.trim().length > 0 && (
+              <Touchable
+                style={[styles.searchAnyButton, { backgroundColor: colors.primary }]}
+                onPress={searchTypedCity}
+              >
+                <Ionicons name="search" size={18} color="#FFF" />
+                <Text style={styles.searchAnyText}>
+                  {t('searchFor')} "{searchQuery.trim()}"
+                </Text>
+              </Touchable>
+            )}
+
             <FlatList
               data={filteredCities}
               keyExtractor={(item) => `${item.city}-${item.country}`}
+              keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
                 <Touchable
                   style={[styles.cityItem, { borderBottomColor: bgColor }]}
@@ -353,6 +416,30 @@ const styles = StyleSheet.create({
   selectedCityText: {
     color: '#FFF',
     fontWeight: '600',
+  },
+  notFoundBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    alignSelf: 'center',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: borderRadius.full,
+    marginBottom: spacing.md,
+    gap: spacing.xs,
+  },
+  searchAnyButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: spacing.md,
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.md,
+    gap: spacing.sm,
+  },
+  searchAnyText: {
+    color: '#FFF',
+    fontWeight: '600',
+    fontSize: 15,
   },
   loadingContainer: {
     flex: 1,
