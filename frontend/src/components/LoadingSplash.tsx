@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import SplashStickman from './splash/SplashStickman';
+import React from 'react';
 import SplashStarryMoon from './splash/SplashStarryMoon';
 
 interface LoadingSplashProps {
@@ -8,11 +7,5 @@ interface LoadingSplashProps {
 }
 
 export default function LoadingSplash({ darkMode, label }: LoadingSplashProps) {
-  const variant = useMemo(() => (Math.random() < 0.5 ? 'stickman' : 'starry'), []);
-
-  return variant === 'stickman' ? (
-    <SplashStickman darkMode={darkMode} label={label} />
-  ) : (
-    <SplashStarryMoon darkMode={darkMode} label={label} />
-  );
+  return <SplashStarryMoon darkMode={darkMode} label={label} />;
 }
