@@ -10,7 +10,17 @@ export const translations = {
     calendar: 'Calendrier',
     more: 'Plus',
     settings: 'Paramètres',
-    
+
+    // More menu
+    moreSubtitle: 'Toutes les fonctionnalités',
+    asmaulHusna: "Les 99 Noms d'Allah",
+    duas: 'Douas & Invocations',
+    salahGuide: 'Guide de la Salah',
+    wuduGuide: 'Guide du Wudu',
+    exploreSection: 'Explorer',
+    toolsSection: 'Outils',
+    guidesSection: 'Guides',
+
     // Home
     assalamuAlaikum: 'Assalamu Alaikum',
     nextPrayer: 'Prochaine prière',
@@ -96,7 +106,17 @@ export const translations = {
     calendar: 'التقويم',
     more: 'المزيد',
     settings: 'الإعدادات',
-    
+
+    // More menu
+    moreSubtitle: 'جميع الميزات',
+    asmaulHusna: 'أسماء الله الحسنى',
+    duas: 'الأدعية والأذكار',
+    salahGuide: 'دليل الصلاة',
+    wuduGuide: 'دليل الوضوء',
+    exploreSection: 'استكشف',
+    toolsSection: 'أدوات',
+    guidesSection: 'أدلة',
+
     // Home
     assalamuAlaikum: 'السلام عليكم',
     nextPrayer: 'الصلاة القادمة',
@@ -182,7 +202,17 @@ export const translations = {
     calendar: 'Calendar',
     more: 'More',
     settings: 'Settings',
-    
+
+    // More menu
+    moreSubtitle: 'All features',
+    asmaulHusna: 'The 99 Names of Allah',
+    duas: 'Duas & Supplications',
+    salahGuide: 'Salah Guide',
+    wuduGuide: 'Wudu Guide',
+    exploreSection: 'Explore',
+    toolsSection: 'Tools',
+    guidesSection: 'Guides',
+
     // Home
     assalamuAlaikum: 'Assalamu Alaikum',
     nextPrayer: 'Next Prayer',

@@ -59,15 +59,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="audio"
-        options={{
-          title: t('podcasts'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="headset" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="qibla"
         options={{
           title: t('qibla'),
@@ -77,23 +68,19 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="dhikr"
+        name="more"
         options={{
-          title: t('dhikr'),
+          title: t('more'),
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="hand-left" size={size} color={color} />
+            <Ionicons name="ellipsis-horizontal" size={size} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="calendar"
-        options={{
-          title: t('calendar'),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" size={size} color={color} />
-          ),
-        }}
-      />
+
+      {/* Hidden from the tab bar, still reachable via the "More" menu */}
+      <Tabs.Screen name="audio" options={{ href: null }} />
+      <Tabs.Screen name="dhikr" options={{ href: null }} />
+      <Tabs.Screen name="calendar" options={{ href: null }} />
     </Tabs>
   );
 }
