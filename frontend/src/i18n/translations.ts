@@ -32,6 +32,7 @@ export const translations = {
     searchCityPlaceholder: 'Rechercher une ville...',
     searchFor: 'Rechercher',
     cityNotFound: 'Ville introuvable, réessayez',
+    prayerTimeNotifBody: "C'est l'heure de la prière 🕌",
     
     // Quran
     readQuran: 'Lire le Coran',
@@ -117,6 +118,7 @@ export const translations = {
     searchCityPlaceholder: 'ابحث عن مدينة...',
     searchFor: 'ابحث عن',
     cityNotFound: 'المدينة غير موجودة، حاول مرة أخرى',
+    prayerTimeNotifBody: 'حان وقت الصلاة 🕌',
     
     // Quran
     readQuran: 'قراءة القرآن',
@@ -202,6 +204,7 @@ export const translations = {
     searchCityPlaceholder: 'Search for a city...',
     searchFor: 'Search',
     cityNotFound: 'City not found, try again',
+    prayerTimeNotifBody: "It's time for prayer 🕌",
     
     // Quran
     readQuran: 'Read Quran',

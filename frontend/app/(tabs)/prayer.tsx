@@ -24,6 +24,10 @@ import {
 import Touchable from '../../src/components/Touchable';
 import LoadingSplash from '../../src/components/LoadingSplash';
 import { withTimeout } from '../../src/utils/withTimeout';
+import {
+  savePrayerTimings,
+  applyPrayerNotifications,
+} from '../../src/services/notificationService';
 
 const POPULAR_CITIES = [
   { city: 'Paris', country: 'France' },
@@ -70,7 +74,7 @@ const POPULAR_CITIES = [
 ];
 
 export default function PrayerScreen() {
-  const { t, darkMode, language, location, setLocation } = useApp();
+  const { t, darkMode, language, location, setLocation, prayerNotifications, adhanSound } = useApp();
   const [loading, setLoading] = useState(true);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
   const [hijriDate, setHijriDate] = useState<HijriDate | null>(null);
@@ -98,6 +102,11 @@ export default function PrayerScreen() {
       return () => clearInterval(interval);
     }
   }, [prayerTimes]);
+
+  const persistAndSchedule = async (timings: PrayerTimes) => {
+    await savePrayerTimings(timings);
+    await applyPrayerNotifications(t, prayerNotifications, adhanSound, timings);
+  };
 
   const loadPrayerTimes = async () => {
     try {
@@ -127,6 +136,7 @@ export default function PrayerScreen() {
         setPrayerTimes(data.timings);
         setHijriDate(data.hijri);
         setSelectedCity(null);
+        persistAndSchedule(data.timings);
       } else {
         setShowCityModal(true);
       }
@@ -147,6 +157,7 @@ export default function PrayerScreen() {
       const data = await getPrayerTimesByCity(city, country);
       setPrayerTimes(data.timings);
       setHijriDate(data.hijri);
+      persistAndSchedule(data.timings);
     } catch (error) {
       console.error('Error loading prayer times for city:', error);
     } finally {
@@ -185,6 +196,7 @@ export default function PrayerScreen() {
       );
       setPrayerTimes(data.timings);
       setHijriDate(data.hijri);
+      persistAndSchedule(data.timings);
     } catch (error) {
       console.error('Error searching city:', error);
       setNotFound(true);

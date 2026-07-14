@@ -4,6 +4,7 @@ import { AppProvider, useApp } from '../src/context/AppContext';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import AppLaunchSplash from '../src/components/AppLaunchSplash';
+import { configureNotifications } from '../src/services/notificationService';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 // `fade` is honored on iOS only; Android/Web get an instant hide from the
@@ -24,6 +25,10 @@ function RootLayoutNav() {
       setNativeSplashHidden(true);
     });
     return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
+    configureNotifications().catch(() => {});
   }, []);
 
   return (

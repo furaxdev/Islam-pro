@@ -18,6 +18,7 @@ import { useApp } from '../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../src/constants/theme';
 import { Language } from '../src/i18n/translations';
 import Touchable from '../src/components/Touchable';
+import { applyPrayerNotifications } from '../src/services/notificationService';
 
 const LANGUAGES: { code: Language; name: string; nativeName: string }[] = [
   { code: 'fr', name: 'French', nativeName: 'Français' },
@@ -80,6 +81,17 @@ export default function SettingsScreen() {
   const cardBg = darkMode ? colors.cardDark : colors.cardLight;
   const textColor = darkMode ? colors.textDark : colors.textLight;
   const textSecondary = darkMode ? colors.textSecondaryDark : colors.textSecondaryLight;
+
+  const handlePrayerNotificationsToggle = async (value: boolean) => {
+    setPrayerNotifications(value);
+    // Reschedule (or cancel) using the last saved timings.
+    await applyPrayerNotifications(t, value, adhanSound);
+  };
+
+  const handleAdhanSoundToggle = async (value: boolean) => {
+    setAdhanSound(value);
+    await applyPrayerNotifications(t, prayerNotifications, value);
+  };
 
   const handleSecretTap = () => {
     const newCount = secretTapCount + 1;
@@ -213,7 +225,7 @@ export default function SettingsScreen() {
               </View>
               <Switch
                 value={prayerNotifications}
-                onValueChange={setPrayerNotifications}
+                onValueChange={handlePrayerNotificationsToggle}
                 trackColor={{ false: '#767577', true: colors.primaryLight }}
                 thumbColor={prayerNotifications ? colors.gold : '#f4f3f4'}
               />
@@ -229,7 +241,7 @@ export default function SettingsScreen() {
               </View>
               <Switch
                 value={adhanSound}
-                onValueChange={setAdhanSound}
+                onValueChange={handleAdhanSoundToggle}
                 trackColor={{ false: '#767577', true: colors.primaryLight }}
                 thumbColor={adhanSound ? colors.gold : '#f4f3f4'}
               />
