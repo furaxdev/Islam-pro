@@ -12,6 +12,7 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Pour les horaires de prière locaux",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Pour les horaires de prière locaux",
         "ITSAppUsesNonExemptEncryption": false
       },
       "bundleIdentifier": "com.islampro.app"

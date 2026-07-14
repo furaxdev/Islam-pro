@@ -97,9 +97,12 @@ export default function PrayerScreen() {
         setPrayerTimes(data.timings);
         setHijriDate(data.hijri);
         setSelectedCity(null);
+      } else {
+        setShowCityModal(true);
       }
     } catch (error) {
       console.error('Error loading prayer times:', error);
+      setShowCityModal(true);
     } finally {
       setLoading(false);
     }
