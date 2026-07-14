@@ -6,8 +6,8 @@
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:8081",
-    "beforeDevCommand": "yarn web",
-    "beforeBuildCommand": "yarn expo export --platform web"
+    "beforeDevCommand": "pnpm web",
+    "beforeBuildCommand": "pnpm exec expo export --platform web"
   },
   "app": {
     "windows": [

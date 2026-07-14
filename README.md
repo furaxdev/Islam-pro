@@ -1,62 +1,77 @@
 # Islam Pro
 
 Application islamique complète (horaires de prière, Coran, Qibla, Dhikr, calendrier
-hijri, hadiths, douas…) — Expo (iOS / Android / Web) + FastAPI.
+hijri, hadiths, douas…). Monorepo **pnpm** : app Expo (iOS / Android / Web / Desktop),
+API Hono (TypeScript), et types partagés.
 
-## Structure du projet
+## Structure (monorepo pnpm)
 
 ```
 Islam-pro/
-├── frontend/     App Expo (React Native + expo-router) — TOUT le code produit est ici
-├── backend/      Service FastAPI + MongoDB (health-check uniquement pour l'instant)
-├── render.yaml   Déploiement Render (backend + frontend web statique)
-└── package.json  Raccourcis vers frontend/ (voir ci-dessous)
+├── apps/
+│   ├── mobile/       App Expo (React Native + expo-router) — iOS/Android/Web
+│   │   └── src-tauri/  Wrapper Tauri → app desktop native (.dmg/.exe)
+│   └── api/          API Hono (Node + TypeScript) + MongoDB
+├── packages/
+│   └── shared/       Types TypeScript partagés entre api et mobile
+├── pnpm-workspace.yaml
+├── .npmrc            node-linker=hoisted (nécessaire pour Expo/Metro)
+└── package.json      Scripts racine (voir ci-dessous)
 ```
 
-> ⚠️ Le `package.json` de l'app est dans **`frontend/`**, pas à la racine.
-> Les commandes ci-dessous fonctionnent depuis la racine grâce aux raccourcis,
-> mais tu peux aussi `cd frontend` et lancer les commandes Expo directement.
+## Prérequis
+
+- **Node** 22+
+- **pnpm** (via `corepack enable`, aucune install manuelle)
+- Pour le desktop uniquement : **Rust** (`rustup`) + Tauri CLI
 
 ## Démarrage rapide
 
 ```bash
 git clone https://github.com/furaxdev/Islam-pro.git
 cd Islam-pro
-yarn install     # installe les deps du frontend (via postinstall)
-yarn start       # lance Metro — puis 'w' (web), 'i' (iOS), 'a' (Android)
+corepack enable        # active pnpm
+pnpm install           # installe TOUT le workspace en une commande
+pnpm mobile            # lance l'app Expo (puis 'w' web, 'i' iOS, 'a' Android)
 ```
 
-Ou directement dans le dossier de l'app :
+## Scripts racine
+
+| Commande             | Effet                                   |
+|----------------------|-----------------------------------------|
+| `pnpm mobile`        | App Expo (Metro)                        |
+| `pnpm mobile:web`    | Expo ciblant le web                     |
+| `pnpm mobile:ios`    | Expo ciblant iOS                        |
+| `pnpm api`           | API Hono en dev (watch)                 |
+| `pnpm lint`          | ESLint sur le mobile                    |
+| `pnpm typecheck`     | Typecheck de tous les packages          |
+
+## API (apps/api)
 
 ```bash
-cd frontend
-yarn install
-yarn start
+cp apps/api/.env.example apps/api/.env   # renseigne MONGO_URL / DB_NAME
+pnpm api                                  # http://localhost:8000/api/health
 ```
 
-Le **frontend n'a besoin d'aucune variable d'environnement** — toutes les données
-viennent d'APIs publiques (Aladhan, AlQuran Cloud, cdn.islamic.network).
+Endpoints : `GET /api/health`, `POST /api/status`, `GET /api/status`.
+Les types de réponse vivent dans `packages/shared` et sont importés **à la fois**
+par l'API et par l'app — c'est tout l'intérêt du monorepo.
 
-## Backend (optionnel)
+## App Desktop (Tauri)
 
 ```bash
-cd backend
-pip install -r requirements.txt
-cp .env.example .env      # puis renseigne MONGO_URL et DB_NAME
-uvicorn server:app --reload
+cd apps/mobile
+pnpm desktop:build     # génère apps/mobile/src-tauri/target/release/bundle/*
 ```
-
-## Commandes utiles (frontend)
-
-| Commande        | Effet                              |
-|-----------------|------------------------------------|
-| `yarn start`    | Serveur de dev Metro               |
-| `yarn web`      | Cible le web                       |
-| `yarn ios`      | Cible iOS                          |
-| `yarn android`  | Cible Android                      |
-| `yarn lint`     | ESLint                             |
 
 ## Déploiement
 
-- **Web** : Render (voir `render.yaml`) — auto-deploy à chaque push sur `main`.
-- **Mobile** : builds EAS (le `projectId` EAS est déjà dans `frontend/app.json`).
+- **Web + API** : Render (voir `render.yaml`) — auto-deploy à chaque push sur `main`.
+- **Mobile** : builds EAS (le `projectId` EAS est dans `apps/mobile/app.json`).
+- **Desktop** : `.dmg` / `.exe` distribués hors store.
+
+## Note
+
+Le frontend n'utilise **aucune variable d'environnement** — toutes les données
+viennent d'APIs publiques (Aladhan, AlQuran Cloud, cdn.islamic.network). Seule
+l'API a besoin de `MONGO_URL` / `DB_NAME`.

@@ -4,8 +4,14 @@ dist/
 .metro-cache/
 *.log
 .DS_Store
-backend/.env
-backend/__pycache__/
-backend/*.egg-info/
-.venv/
+
+# Env files (never commit secrets)
+.env
+.env.local
+
+# Rust / Tauri build output
+apps/mobile/src-tauri/target/
+apps/mobile/src-tauri/gen/schemas
+
+# Misc
 Islamic App Source.zip

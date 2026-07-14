@@ -1,22 +1,11 @@
 import axios from 'axios';
+// Shared API-contract types live in packages/shared so the API and the app
+// stay in sync. Re-exported here to keep existing local imports working.
+import type { PrayerTimes, HijriDate } from '@islam-pro/shared';
+
+export type { PrayerTimes, HijriDate };
 
 const ALADHAN_API = 'https://api.aladhan.com/v1';
-
-export interface PrayerTimes {
-  Fajr: string;
-  Sunrise: string;
-  Dhuhr: string;
-  Asr: string;
-  Maghrib: string;
-  Isha: string;
-}
-
-export interface HijriDate {
-  day: string;
-  month: { number: number; en: string; ar: string };
-  year: string;
-  designation: { abbreviated: string; expanded: string };
-}
 
 export async function getPrayerTimesByCoords(
   latitude: number,

@@ -2,13 +2,15 @@
   "name": "islam-pro",
   "version": "1.0.0",
   "private": true,
-  "description": "Islam Pro — monorepo. The Expo app lives in frontend/, the FastAPI service in backend/.",
+  "description": "Islam Pro monorepo — Expo app (apps/mobile), Hono API (apps/api), shared TS types (packages/shared).",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
-    "postinstall": "cd frontend && yarn install",
-    "start": "cd frontend && yarn start",
-    "web": "cd frontend && yarn web",
-    "ios": "cd frontend && yarn ios",
-    "android": "cd frontend && yarn android",
-    "lint": "cd frontend && yarn lint"
+    "mobile": "pnpm --filter @islam-pro/mobile start",
+    "mobile:web": "pnpm --filter @islam-pro/mobile web",
+    "mobile:ios": "pnpm --filter @islam-pro/mobile ios",
+    "mobile:android": "pnpm --filter @islam-pro/mobile android",
+    "api": "pnpm --filter @islam-pro/api dev",
+    "lint": "pnpm --filter @islam-pro/mobile lint",
+    "typecheck": "pnpm -r typecheck"
   }
 }

@@ -1,29 +1,27 @@
 services:
-  # Backend API - FastAPI
+  # API — Hono (Node + TypeScript). Runs from the pnpm workspace root.
   - type: web
-    name: islam-pro-backend
-    runtime: python
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    name: islam-pro-api
+    runtime: node
+    buildCommand: corepack enable && pnpm install --frozen-lockfile
+    startCommand: pnpm --filter @islam-pro/api start
     envVars:
       - key: MONGO_URL
         sync: false
       - key: DB_NAME
-        value: islam_pro_db
-      - key: PYTHON_VERSION
-        value: 3.11.0
+        value: islampro
+      - key: NODE_VERSION
+        value: 22.17.0
 
-  # Frontend - Expo Web (Static Site)
+  # Mobile app exported as static web. Built from the pnpm workspace root.
   - type: web
     name: islam-pro-frontend
     runtime: static
-    rootDir: frontend
-    buildCommand: npm install && npx expo export --platform web
-    staticPublishPath: dist
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @islam-pro/mobile exec expo export --platform web
+    staticPublishPath: apps/mobile/dist
     envVars:
       - key: EXPO_PUBLIC_API_URL
         fromService:
           type: web
-          name: islam-pro-backend
+          name: islam-pro-api
           property: host
