@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import * as Location from 'expo-location';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import {
@@ -21,7 +20,7 @@ import {
   PrayerTimes,
   HijriDate,
 } from '../../src/services/prayerService';
-import { getDeviceLocation } from '../../src/services/locationService';
+import { getDeviceLocation, geocodePlaceName } from '../../src/services/locationService';
 import Touchable from '../../src/components/Touchable';
 import LoadingSplash from '../../src/components/LoadingSplash';
 import { withTimeout } from '../../src/utils/withTimeout';
@@ -163,18 +162,14 @@ export default function PrayerScreen() {
       setNotFound(false);
 
       // Geocode any place name (even small villages) into coordinates.
-      const results = await withTimeout(
-        Location.geocodeAsync(query),
-        8000,
-        'Geocoding timed out'
-      );
+      const result = await geocodePlaceName(query);
 
-      if (!results || results.length === 0) {
+      if (!result) {
         setNotFound(true);
         return;
       }
 
-      const { latitude, longitude } = results[0];
+      const { latitude, longitude } = result;
       setSelectedCity(query);
       setLocation({ latitude, longitude });
 

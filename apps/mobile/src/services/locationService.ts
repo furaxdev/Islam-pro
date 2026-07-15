@@ -49,3 +49,27 @@ export async function getDeviceLocation(): Promise<Coords | null> {
 
   return getIpLocation();
 }
+
+// expo-location's geocodeAsync throws unconditionally on web (unimplemented),
+// so typed city search never found anything smaller than the hardcoded
+// popular-cities list. Nominatim (OpenStreetMap) works on every platform and
+// resolves villages that Aladhan's own city lookup wouldn't recognize either.
+export async function geocodePlaceName(query: string): Promise<Coords | null> {
+  try {
+    const { data } = await withTimeout(
+      axios.get('https://nominatim.openstreetmap.org/search', {
+        params: { q: query, format: 'json', limit: 1 },
+        headers: { 'Accept-Language': 'fr' },
+      }),
+      8000,
+      'Geocoding timed out'
+    );
+    if (Array.isArray(data) && data.length > 0) {
+      const { lat, lon } = data[0];
+      return { latitude: parseFloat(lat), longitude: parseFloat(lon) };
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
