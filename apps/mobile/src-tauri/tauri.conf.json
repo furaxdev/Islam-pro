@@ -13,10 +13,10 @@
     "windows": [
       {
         "title": "Islam Pro",
-        "width": 440,
-        "height": 900,
-        "minWidth": 380,
-        "minHeight": 640,
+        "width": 1000,
+        "height": 720,
+        "minWidth": 700,
+        "minHeight": 520,
         "center": true,
         "resizable": true,
         "fullscreen": false
@@ -38,6 +38,14 @@
     ],
     "android": {
       "debugApplicationIdSuffix": ".debug"
+    },
+    "macOS": {
+      "dmg": {
+        "background": "dmg-background.png",
+        "windowSize": { "width": 660, "height": 400 },
+        "appPosition": { "x": 180, "y": 170 },
+        "applicationFolderPosition": { "x": 480, "y": 170 }
+      }
     }
   }
 }
