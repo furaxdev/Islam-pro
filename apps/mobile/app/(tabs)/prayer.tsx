@@ -21,6 +21,7 @@ import {
   PrayerTimes,
   HijriDate,
 } from '../../src/services/prayerService';
+import { getDeviceLocation } from '../../src/services/locationService';
 import Touchable from '../../src/components/Touchable';
 import LoadingSplash from '../../src/components/LoadingSplash';
 import { withTimeout } from '../../src/utils/withTimeout';
@@ -111,25 +112,13 @@ export default function PrayerScreen() {
   const loadPrayerTimes = async () => {
     try {
       setLoading(true);
-      const { status } = await withTimeout(
-        Location.requestForegroundPermissionsAsync(),
-        8000,
-        'Location permission timed out'
-      );
+      const loc = await getDeviceLocation();
 
-      if (status === 'granted') {
-        const loc = await withTimeout(
-          Location.getCurrentPositionAsync({}),
-          8000,
-          'Location fix timed out'
-        );
-        setLocation({
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude,
-        });
+      if (loc) {
+        setLocation(loc);
 
         const data = await withTimeout(
-          getPrayerTimesByCoords(loc.coords.latitude, loc.coords.longitude),
+          getPrayerTimesByCoords(loc.latitude, loc.longitude),
           8000,
           'Prayer times request timed out'
         );

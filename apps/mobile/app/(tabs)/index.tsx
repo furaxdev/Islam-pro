@@ -10,7 +10,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import * as Location from 'expo-location';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import {
@@ -22,6 +21,7 @@ import {
 } from '../../src/services/prayerService';
 import { getDailyHadith, Hadith } from '../../src/services/hadithService';
 import { getUpcomingEvents, IslamicEvent, hijriMonths } from '../../src/services/calendarService';
+import { getDeviceLocation } from '../../src/services/locationService';
 import Touchable from '../../src/components/Touchable';
 import LoadingSplash from '../../src/components/LoadingSplash';
 import { withTimeout } from '../../src/utils/withTimeout';
@@ -63,33 +63,22 @@ export default function HomeScreen() {
   const loadData = async () => {
     try {
       setLoading(true);
-      
-      // Get location
-      const { status } = await withTimeout(
-        Location.requestForegroundPermissionsAsync(),
-        8000,
-        'Location permission timed out'
-      );
-      if (status === 'granted') {
-        const location = await withTimeout(
-          Location.getCurrentPositionAsync({}),
-          8000,
-          'Location fix timed out'
-        );
-        saveLocation({
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        });
+
+      // Get location (device GPS, falling back to IP-based lookup on
+      // platforms like desktop where the permission prompt never fires)
+      const location = await getDeviceLocation();
+      if (location) {
+        saveLocation(location);
 
         // Get prayer times
         const data = await withTimeout(
-          getPrayerTimesByCoords(location.coords.latitude, location.coords.longitude),
+          getPrayerTimesByCoords(location.latitude, location.longitude),
           8000,
           'Prayer times request timed out'
         );
         setPrayerTimes(data.timings);
         setHijriDate(data.hijri);
-        
+
         // Get upcoming events
         if (data.hijri) {
           const events = getUpcomingEvents(
