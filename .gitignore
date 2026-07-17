@@ -12,6 +12,10 @@ dist/
 # Rust / Tauri build output
 apps/mobile/src-tauri/target/
 apps/mobile/src-tauri/gen/schemas
+apps/mobile/builds/
+
+# Claude Code local settings (personal, machine-specific)
+.claude/settings.local.json
 
 # Misc
 Islamic App Source.zip

@@ -26,9 +26,6 @@ Run from the repo root (pnpm). `corepack enable` first if pnpm is missing.
 
 ## Architecture
 
-### Routing
-File-based routing via `expo-router` (in `apps/mobile`). Top-level tab bar is defined in `app/(tabs)/_layout.tsx` with tabs: `index` (home), `prayer`, `quran`, `audio`, `qibla`, `dhikr`, `calendar`. Additional stack screens live outside the tab group: `surah/[id].tsx`, `audio/[id].tsx`, `settings.tsx`, `asma.tsx`, `dua.tsx`, `salah.tsx`, `wudu.tsx`.
-
 ### State and theming
 - `apps/mobile/src/context/AppContext.tsx` is the single global context — holds language, dark mode, and translation helper `t()`. Screens consume it via `useApp()`.
 - `apps/mobile/src/constants/theme.ts` defines the color palette (`colors.gold`, `colors.backgroundDark/Light`, etc.) referenced throughout the UI instead of hardcoded colors.

@@ -1,4 +1,4 @@
-import * as Location from 'expo-location';
+import { getDeviceLocation } from './locationService';
 
 const KAABA_LAT = 21.4225;
 const KAABA_LNG = 39.8262;
@@ -44,13 +44,12 @@ function computeDistanceKm(lat: number, lng: number): number {
 }
 
 export async function getQiblaDirection(): Promise<QiblaDirection> {
-  const { status } = await Location.requestForegroundPermissionsAsync();
-  if (status !== 'granted') {
+  const location = await getDeviceLocation();
+  if (!location) {
     throw new Error('Location permission not granted');
   }
 
-  const location = await Location.getCurrentPositionAsync({});
-  const { latitude, longitude } = location.coords;
+  const { latitude, longitude } = location;
 
   return {
     angle: computeQiblaAngle(latitude, longitude),

@@ -11,6 +11,7 @@ DMG_DIR="src-tauri/target/release/bundle/dmg"
 SRC_DMG="$DMG_DIR/Islam Pro_1.0.0_x64.dmg"
 FINAL_NAME="Islam Pro Installer"
 RW_DMG="/tmp/islam-pro-installer-rw.dmg"
+BUILDS_DIR="builds"
 
 rm -rf "$DMG_DIR"
 pnpm exec tauri build --bundles dmg
@@ -29,4 +30,7 @@ rm -f "$DMG_DIR/$FINAL_NAME.dmg"
 hdiutil convert "$RW_DMG" -format UDZO -imagekey zlib-level=9 -o "$DMG_DIR/$FINAL_NAME.dmg"
 rm -f "$RW_DMG" "$SRC_DMG"
 
-echo "Installer ready: $DMG_DIR/$FINAL_NAME.dmg"
+mkdir -p "$BUILDS_DIR"
+cp "$DMG_DIR/$FINAL_NAME.dmg" "$BUILDS_DIR/$FINAL_NAME.dmg"
+
+echo "Installer ready: $BUILDS_DIR/$FINAL_NAME.dmg"
