@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Svg, { Circle } from 'react-native-svg';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
 import { colors, spacing, borderRadius } from '../constants/theme';
 import { Dhikr } from '../services/dhikrService';
 import { useApp } from '../context/AppContext';
+
+// Progress-ring geometry. Radius leaves room for the stroke so it isn't clipped.
+const RING_SIZE = 200;
+const RING_STROKE = 8;
+const RING_RADIUS = (RING_SIZE - RING_STROKE) / 2;
+const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
 interface TasbihCounterProps {
   dhikr: Dhikr;
@@ -44,16 +51,31 @@ export default function TasbihCounter({ dhikr, darkMode }: TasbihCounterProps) {
       </Text>
       <Text style={[styles.meaning, { color: textSecondary }]}>{t(dhikr.meaningKey)}</Text>
 
-      <View style={[styles.progressRing, { borderColor: textSecondary + '30' }]}>
-        <View
-          style={[
-            styles.progressFill,
-            {
-              borderColor: colors.gold,
-              transform: [{ rotate: `${progress * 360}deg` }],
-            },
-          ]}
-        />
+      <View style={styles.progressRing}>
+        <Svg width={RING_SIZE} height={RING_SIZE} style={StyleSheet.absoluteFill}>
+          {/* Track */}
+          <Circle
+            cx={RING_SIZE / 2}
+            cy={RING_SIZE / 2}
+            r={RING_RADIUS}
+            stroke={textSecondary + '30'}
+            strokeWidth={RING_STROKE}
+            fill="none"
+          />
+          {/* Progress arc — starts at top (rotated -90°) and fills clockwise */}
+          <Circle
+            cx={RING_SIZE / 2}
+            cy={RING_SIZE / 2}
+            r={RING_RADIUS}
+            stroke={colors.gold}
+            strokeWidth={RING_STROKE}
+            fill="none"
+            strokeLinecap="round"
+            strokeDasharray={RING_CIRCUMFERENCE}
+            strokeDashoffset={RING_CIRCUMFERENCE * (1 - progress)}
+            transform={`rotate(-90 ${RING_SIZE / 2} ${RING_SIZE / 2})`}
+          />
+        </Svg>
         <TouchableOpacity style={styles.counterButton} onPress={increment} activeOpacity={0.7}>
           <Text style={[styles.countText, { color: textColor }]}>{progressInCycle}</Text>
           <Text style={[styles.targetText, { color: textSecondary }]}>/ {dhikr.targetCount}</Text>
@@ -81,22 +103,11 @@ const styles = StyleSheet.create({
   arabic: { fontSize: 26, fontWeight: '600', marginBottom: spacing.xs, textAlign: 'center' },
   meaning: { fontSize: 14, marginBottom: spacing.lg, textAlign: 'center' },
   progressRing: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 6,
+    width: RING_SIZE,
+    height: RING_SIZE,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: spacing.md,
-  },
-  progressFill: {
-    position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    borderWidth: 6,
-    borderLeftColor: 'transparent',
-    borderBottomColor: 'transparent',
   },
   counterButton: {
     width: 160,
