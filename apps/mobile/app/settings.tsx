@@ -18,7 +18,7 @@ import { useApp } from '../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../src/constants/theme';
 import { Language } from '../src/i18n/translations';
 import Touchable from '../src/components/Touchable';
-import { applyPrayerNotifications } from '../src/services/notificationService';
+import { applyPrayerNotifications, sendTestNotification } from '../src/services/notificationService';
 
 const LANGUAGES: { code: Language; name: string; nativeName: string }[] = [
   { code: 'fr', name: 'French', nativeName: 'Français' },
@@ -93,30 +93,44 @@ export default function SettingsScreen() {
     await applyPrayerNotifications(t, prayerNotifications, value);
   };
 
+  const handleTestNotification = async () => {
+    const sent = await sendTestNotification(
+      t('testTitle'),
+      t('testBody'),
+      adhanSound
+    );
+    if (sent) {
+      const msg = Platform.OS === 'web' ? t('testSentWeb') : t('testSentMobile');
+      Alert.alert(t('testSentTitle'), msg);
+    } else {
+      Alert.alert(t('testFailTitle'), t('testFailBody'));
+    }
+  };
+
   const handleSecretTap = () => {
     const newCount = secretTapCount + 1;
     setSecretTapCount(newCount);
     if (newCount >= 5 && !showDevMenu) {
       setShowDevMenu(true);
-      Alert.alert('Mode développeur', 'Menu développeur déverrouillé !');
+      Alert.alert(t('devModeTitle'), t('devModeBody'));
     }
   };
 
   const clearCache = async () => {
     Alert.alert(
-      'Vider le cache',
-      'Êtes-vous sûr de vouloir vider le cache ?',
+      t('clearCache'),
+      t('clearCacheConfirm'),
       [
-        { text: 'Annuler', style: 'cancel' },
+        { text: t('cancel'), style: 'cancel' },
         {
-          text: 'Confirmer',
+          text: t('confirm'),
           style: 'destructive',
           onPress: async () => {
             try {
               await AsyncStorage.clear();
-              Alert.alert('Succès', 'Le cache a été vidé.');
+              Alert.alert(t('success'), t('cacheClearedBody'));
             } catch {
-              Alert.alert('Erreur', 'Impossible de vider le cache.');
+              Alert.alert(t('error'), t('cacheClearError'));
             }
           },
         },
@@ -213,15 +227,15 @@ export default function SettingsScreen() {
 
         {/* Prayer Settings */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>Paramètres de prière</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>{t('prayerSettings')}</Text>
           <View style={[styles.card, { backgroundColor: cardBg }, shadows.sm]}>
             <View style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}>
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="notifications" size={20} color={colors.gold} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Notifications de prière</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('prayerNotifications')}</Text>
                 </View>
-                <Text style={[styles.optionSubtext, { color: textSecondary }]}>Rappels avant chaque prière</Text>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>{t('prayerNotificationsDesc')}</Text>
               </View>
               <Switch
                 value={prayerNotifications}
@@ -235,9 +249,9 @@ export default function SettingsScreen() {
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="volume-high" size={20} color={colors.primary} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Son de l'Adhan</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('adhanSoundLabel')}</Text>
                 </View>
-                <Text style={[styles.optionSubtext, { color: textSecondary }]}>Jouer l'appel à la prière</Text>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>{t('adhanSoundDesc')}</Text>
               </View>
               <Switch
                 value={adhanSound}
@@ -247,11 +261,27 @@ export default function SettingsScreen() {
               />
             </View>
 
+            <Touchable
+              style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}
+              onPress={handleTestNotification}
+            >
+              <View style={styles.optionContent}>
+                <View style={styles.optionIconRow}>
+                  <Ionicons name="play-circle" size={20} color={colors.primary} />
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('testNotification')}</Text>
+                </View>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>
+                  {t('testNotificationDesc')}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={textSecondary} />
+            </Touchable>
+
             <Touchable style={styles.option} onPress={() => setShowMethodPicker(true)}>
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="calculator" size={20} color={colors.info} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Méthode de calcul</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('calculationMethod')}</Text>
                 </View>
                 <Text style={[styles.optionSubtext, { color: textSecondary }]} numberOfLines={1}>
                   {CALCULATION_METHODS.find(m => m.id === calculationMethod)?.name}
@@ -264,15 +294,15 @@ export default function SettingsScreen() {
 
         {/* Quran Settings */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>Paramètres du Coran</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>{t('quranSettings')}</Text>
           <View style={[styles.card, { backgroundColor: cardBg }, shadows.sm]}>
             <View style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}>
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="language" size={20} color={colors.info} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Afficher traduction</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('showTranslationLabel')}</Text>
                 </View>
-                <Text style={[styles.optionSubtext, { color: textSecondary }]}>Traduction sous le texte arabe</Text>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>{t('showTranslationDesc')}</Text>
               </View>
               <Switch
                 value={showTranslation}
@@ -289,7 +319,7 @@ export default function SettingsScreen() {
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="mic" size={20} color={colors.maghrib} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Récitateur</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('reciter')}</Text>
                 </View>
                 <Text style={[styles.optionSubtext, { color: textSecondary }]}>
                   {RECITERS.find(r => r.id === reciter)?.name}
@@ -302,7 +332,7 @@ export default function SettingsScreen() {
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="text" size={20} color={colors.gold} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Taille du texte arabe</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('arabicTextSize')}</Text>
                 </View>
               </View>
               <View style={styles.fontSizeButtons}>
@@ -333,7 +363,7 @@ export default function SettingsScreen() {
 
         {/* Display */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>Affichage</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>{t('display')}</Text>
           <View style={[styles.card, { backgroundColor: cardBg }, shadows.sm]}>
             <View style={styles.option}>
               <View style={styles.optionContent}>
@@ -341,7 +371,7 @@ export default function SettingsScreen() {
                   <Ionicons name="moon" size={20} color={colors.maghrib} />
                   <Text style={[styles.optionText, { color: textColor }]}>{t('darkMode')}</Text>
                 </View>
-                <Text style={[styles.optionSubtext, { color: textSecondary }]}>Thème sombre pour les yeux</Text>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>{t('darkModeDesc')}</Text>
               </View>
               <Switch
                 value={darkMode}
@@ -355,7 +385,7 @@ export default function SettingsScreen() {
 
         {/* Data & Storage */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>Données et stockage</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>{t('dataStorage')}</Text>
           <View style={[styles.card, { backgroundColor: cardBg }, shadows.sm]}>
             <Touchable
               style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}
@@ -364,9 +394,9 @@ export default function SettingsScreen() {
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="trash" size={20} color={colors.error} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Vider le cache</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('clearCache')}</Text>
                 </View>
-                <Text style={[styles.optionSubtext, { color: textSecondary }]}>Libérer de l'espace</Text>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>{t('clearCacheDesc')}</Text>
               </View>
               <Ionicons name="chevron-forward" size={20} color={textSecondary} />
             </Touchable>
@@ -387,8 +417,10 @@ export default function SettingsScreen() {
               <Text style={[styles.appName, { color: textColor }]}>Islam Pro</Text>
               <Text style={[styles.appVersion, { color: textSecondary }]}>Version 1.0.0</Text>
               <Text style={[styles.appDescription, { color: textSecondary }]}>
-                Application complète pour les musulmans : horaires de prière,
-                Coran, hadiths, podcasts et bien plus.
+                {t('appDescription')}
+              </Text>
+              <Text style={[styles.appVersion, { color: textSecondary, marginTop: spacing.sm }]}>
+                {t('adhanCredit')}
               </Text>
             </View>
           </View>
@@ -396,21 +428,21 @@ export default function SettingsScreen() {
 
         {/* Features */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>Fonctionnalités</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>{t('featuresTitle')}</Text>
           <View style={[styles.card, { backgroundColor: cardBg }, shadows.sm]}>
             {[
-              { icon: 'time', text: 'Horaires de prière avec GPS', color: colors.gold },
-              { icon: 'book', text: 'Lecture du Coran avec traduction', color: colors.primary },
-              { icon: 'headset', text: 'Podcasts islamiques', color: colors.info },
-              { icon: 'compass', text: 'Boussole Qibla', color: colors.maghrib },
-              { icon: 'hand-left', text: 'Compteur Dhikr/Tasbih', color: colors.gold },
-              { icon: 'calendar', text: 'Calendrier islamique', color: colors.info },
-              { icon: 'moon', text: '99 Noms d\'Allah', color: colors.isha },
-              { icon: 'book', text: 'Douas et invocations', color: colors.primary },
-              { icon: 'water', text: 'Guide du Wudu', color: colors.info },
-              { icon: 'book', text: 'Guide de la Salah', color: colors.gold },
-              { icon: 'sparkles', text: '50+ Hadiths', color: colors.maghrib },
-              { icon: 'globe', text: 'Multi-langue (FR, EN, AR)', color: colors.primary },
+              { icon: 'time', text: t('featPrayerTimes'), color: colors.gold },
+              { icon: 'book', text: t('featQuranRead'), color: colors.primary },
+              { icon: 'headset', text: t('featPodcasts'), color: colors.info },
+              { icon: 'compass', text: t('featQibla'), color: colors.maghrib },
+              { icon: 'hand-left', text: t('featDhikrCounter'), color: colors.gold },
+              { icon: 'calendar', text: t('featIslamicCalendar'), color: colors.info },
+              { icon: 'moon', text: t('feat99Names'), color: colors.isha },
+              { icon: 'book', text: t('featDuas'), color: colors.primary },
+              { icon: 'water', text: t('featWuduGuide'), color: colors.info },
+              { icon: 'book', text: t('featSalahGuide'), color: colors.gold },
+              { icon: 'sparkles', text: t('featHadiths'), color: colors.maghrib },
+              { icon: 'globe', text: t('featMultiLang'), color: colors.primary },
             ].map((feature, index) => (
               <View
                 key={index}
@@ -429,13 +461,13 @@ export default function SettingsScreen() {
 
         {/* Support */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: textSecondary }]}>Support</Text>
+          <Text style={[styles.sectionTitle, { color: textSecondary }]}>{t('support')}</Text>
           <View style={[styles.card, { backgroundColor: cardBg }, shadows.sm]}>
             <Touchable style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}>
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="star" size={20} color={colors.gold} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Noter l'application</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('rateApp')}</Text>
                 </View>
               </View>
               <Ionicons name="chevron-forward" size={20} color={textSecondary} />
@@ -445,7 +477,7 @@ export default function SettingsScreen() {
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="mail" size={20} color={colors.primary} />
-                  <Text style={[styles.optionText, { color: textColor }]}>Nous contacter</Text>
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('contactUs')}</Text>
                 </View>
               </View>
               <Ionicons name="chevron-forward" size={20} color={textSecondary} />
@@ -457,7 +489,7 @@ export default function SettingsScreen() {
       {renderPickerModal(
         showMethodPicker,
         () => setShowMethodPicker(false),
-        'Méthode de calcul',
+        t('calculationMethod'),
         CALCULATION_METHODS,
         calculationMethod,
         setCalculationMethod
@@ -466,7 +498,7 @@ export default function SettingsScreen() {
       {renderPickerModal(
         showReciterPicker,
         () => setShowReciterPicker(false),
-        'Choisir un récitateur',
+        t('chooseReciter'),
         RECITERS,
         reciter,
         setReciter
@@ -505,10 +537,12 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   optionBorder: { borderBottomWidth: 1 },
-  optionContent: { flex: 1, marginRight: spacing.sm },
+  optionContent: { flex: 1, marginRight: spacing.sm, alignItems: 'flex-start' },
   optionIconRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
-  optionText: { fontSize: 16, fontWeight: '500' },
-  optionSubtext: { fontSize: 13, marginTop: 2, marginLeft: 28 },
+  // textAlign/writingDirection forced to LTR so RTL scripts (Arabic native
+  // names) still align left like the other rows instead of jumping to the edge.
+  optionText: { fontSize: 16, fontWeight: '500', textAlign: 'left', writingDirection: 'ltr' },
+  optionSubtext: { fontSize: 13, marginTop: 2, marginLeft: 28, textAlign: 'left', writingDirection: 'ltr' },
   fontSizeButtons: { flexDirection: 'row', gap: spacing.xs },
   fontSizeButton: {
     width: 36,
