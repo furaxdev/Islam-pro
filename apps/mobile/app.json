@@ -48,7 +48,8 @@
       [
         "expo-notifications",
         {
-          "color": "#1B5E20"
+          "color": "#1B5E20",
+          "sounds": ["./assets/sounds/adhan.wav"]
         }
       ]
     ],

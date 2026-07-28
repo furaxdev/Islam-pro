@@ -2,6 +2,11 @@ import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Platform } from 'react-native';
 import { PrayerTimes } from './prayerService';
+import {
+  cancelWebPrayerNotifications,
+  scheduleWebPrayerNotifications,
+  showWebNotification,
+} from './webNotifications';
 
 const STORAGE_KEY = 'lastPrayerTimings';
 // Sunrise is intentionally excluded — it is not a prayer, just an informational time.
@@ -26,7 +31,7 @@ export async function configureNotifications(): Promise<void> {
     await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
       name: 'Prayer times',
       importance: Notifications.AndroidImportance.HIGH,
-      sound: 'default',
+      sound: 'adhan.wav',
       vibrationPattern: [0, 250, 250, 250],
     }).catch(() => {});
   }
@@ -69,6 +74,23 @@ interface SyncOptions {
  * schedules one daily-repeating notification per prayer at its time.
  */
 async function syncPrayerNotifications(opts: SyncOptions): Promise<void> {
+  // Desktop/web: expo-notifications is a no-op here, so drive the Web
+  // Notification API + setTimeout-based scheduling instead.
+  if (Platform.OS === 'web') {
+    cancelWebPrayerNotifications();
+    if (!opts.enabled) return;
+    const timings = opts.timings ?? (await getSavedTimings());
+    if (!timings) return;
+    const prayers = PRAYER_ORDER.flatMap((key) => {
+      const raw = timings[key];
+      return raw
+        ? [{ time: raw.substring(0, 5), title: opts.labels[key] ?? String(key) }]
+        : [];
+    });
+    scheduleWebPrayerNotifications(prayers, opts.body, opts.sound);
+    return;
+  }
+
   await Notifications.cancelAllScheduledNotificationsAsync().catch(() => {});
   if (!opts.enabled) return;
 
@@ -88,7 +110,7 @@ async function syncPrayerNotifications(opts: SyncOptions): Promise<void> {
       content: {
         title: opts.labels[key] ?? String(key),
         body: opts.body,
-        sound: opts.sound ? 'default' : undefined,
+        sound: opts.sound ? 'adhan.wav' : undefined,
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -97,6 +119,45 @@ async function syncPrayerNotifications(opts: SyncOptions): Promise<void> {
         channelId: ANDROID_CHANNEL_ID,
       },
     }).catch(() => {});
+  }
+}
+
+/**
+ * Fires one immediate local notification with the adhan sound, so users can
+ * check their permissions/volume/sound settings actually work without waiting
+ * for a real prayer time. On mobile this goes through expo-notifications; on
+ * desktop/web it goes through the Web Notification API (see webNotifications).
+ * Resolves to false (rather than throwing) if permission is denied.
+ */
+export async function sendTestNotification(
+  title: string,
+  body: string,
+  sound: boolean
+): Promise<boolean> {
+  // Desktop/web: show it immediately via the Web Notification API.
+  if (Platform.OS === 'web') {
+    return showWebNotification(title, body, sound);
+  }
+
+  const granted = await requestNotificationPermissions();
+  if (!granted) return false;
+
+  try {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title,
+        body,
+        sound: sound ? 'adhan.wav' : undefined,
+      },
+      trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+        seconds: 2,
+        channelId: ANDROID_CHANNEL_ID,
+      },
+    });
+    return true;
+  } catch {
+    return false;
   }
 }
 
