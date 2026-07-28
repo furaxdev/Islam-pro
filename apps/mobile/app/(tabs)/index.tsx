@@ -25,6 +25,7 @@ import { getDeviceLocation } from '../../src/services/locationService';
 import Touchable from '../../src/components/Touchable';
 import LoadingSplash from '../../src/components/LoadingSplash';
 import { withTimeout } from '../../src/utils/withTimeout';
+import { selectable } from '../../src/utils/selectable';
 
 export default function HomeScreen() {
   const { t, darkMode, language, setLocation: saveLocation } = useApp();
@@ -88,7 +89,7 @@ export default function HomeScreen() {
           setUpcomingEvents(events);
         }
       }
-      
+
       // Get daily hadith
       setHadith(getDailyHadith());
     } catch (error) {
@@ -218,13 +219,13 @@ export default function HomeScreen() {
                 {t('hadithOfDay')}
               </Text>
             </View>
-            <Text style={[styles.hadithArabic, { color: textColor }]}>
+            <Text {...selectable} style={[styles.hadithArabic, { color: textColor }]}>
               {hadith.arabic}
             </Text>
-            <Text style={[styles.hadithTranslation, { color: textSecondary }]}>
+            <Text {...selectable} style={[styles.hadithTranslation, { color: textSecondary }]}>
               {hadith.translation}
             </Text>
-            <Text style={[styles.hadithSource, { color: textSecondary }]}>
+            <Text {...selectable} style={[styles.hadithSource, { color: textSecondary }]}>
               {hadith.source}
             </Text>
           </View>

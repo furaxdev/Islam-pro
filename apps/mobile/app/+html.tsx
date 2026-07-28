@@ -24,6 +24,14 @@ export default function Root({ children }: PropsWithChildren) {
               body > div:first-child { position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; }
               [role="tablist"] [role="tab"] * { overflow: visible !important; }
               [role="heading"], [role="heading"] * { overflow: visible !important; }
+              /* Disable the ugly text-selection highlight everywhere by default
+                 (desktop/web); opt back in only on readable content that carries
+                 data-selectable="true" (hadith text, Quran verses, du'as...). */
+              * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+              [data-selectable="true"], [data-selectable="true"] * {
+                -webkit-user-select: text !important; user-select: text !important;
+                -webkit-touch-callout: default;
+              }
             `,
           }}
         />

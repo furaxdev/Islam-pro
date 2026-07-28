@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useApp } from '../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../src/constants/theme';
 import { salahSteps, SalahStep } from '../src/data/salahSteps';
 import Touchable from '../src/components/Touchable';
 
 export default function SalahScreen() {
+  const router = useRouter();
   const { t, darkMode } = useApp();
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
@@ -27,6 +29,10 @@ export default function SalahScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <Touchable style={styles.backButton} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color={textColor} />
+          <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
+        </Touchable>
         <View style={styles.header}>
           <Text style={[styles.title, { color: textColor }]}>Guide Salah</Text>
           <Text style={[styles.subtitle, { color: colors.gold }]}>الصلاة</Text>
@@ -127,6 +133,14 @@ export default function SalahScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollView: { flex: 1 },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
+  backText: { fontSize: 16 },
   header: { padding: spacing.md, paddingBottom: spacing.sm },
   title: { fontSize: 28, fontWeight: '700' },
   subtitle: { fontSize: 22, marginTop: 4 },

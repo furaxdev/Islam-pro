@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import { dhikrList, Dhikr } from '../../src/services/dhikrService';
@@ -9,6 +10,7 @@ import TasbihCounter from '../../src/components/TasbihCounter';
 import Touchable from '../../src/components/Touchable';
 
 export default function DhikrScreen() {
+  const router = useRouter();
   const { t, darkMode, language } = useApp();
   const [selectedDhikr, setSelectedDhikr] = useState<Dhikr>(dhikrList[0]);
 
@@ -23,6 +25,10 @@ export default function DhikrScreen() {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <Touchable style={styles.screenBackButton} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color={textColor} />
+          <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
+        </Touchable>
         <View style={styles.header}>
           <Text style={[styles.title, { color: textColor }]}>{t('tasbih')}</Text>
           <Text style={[styles.subtitle, { color: textSecondary }]}>
@@ -101,6 +107,14 @@ export default function DhikrScreen() {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   scrollView: { flex: 1 },
+  screenBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
+  backText: { fontSize: 16 },
   header: { padding: spacing.md, paddingBottom: spacing.sm },
   title: { fontSize: 28, fontWeight: '700' },
   subtitle: { fontSize: 16, marginTop: 4 },

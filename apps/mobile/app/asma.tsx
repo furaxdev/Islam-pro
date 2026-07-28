@@ -5,9 +5,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../src/constants/theme';
 import { asmaAllah, AsmaName } from '../src/services/asmaService';
+import { useRouter } from 'expo-router';
 import Touchable from '../src/components/Touchable';
+import { selectable } from '../src/utils/selectable';
 
 export default function AsmaScreen() {
+  const router = useRouter();
   const { t, darkMode, language } = useApp();
   const [selectedName, setSelectedName] = useState<AsmaName | null>(null);
 
@@ -35,6 +38,10 @@ export default function AsmaScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
+      <Touchable style={styles.screenBackButton} onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={24} color={textColor} />
+        <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
+      </Touchable>
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>Les 99 Noms</Text>
         <Text style={[styles.subtitle, { color: colors.gold }]}>أسماء الله الحسنى</Text>
@@ -50,7 +57,7 @@ export default function AsmaScreen() {
             <Text style={[styles.backText, { color: textColor }]}>Retour à la liste</Text>
           </Touchable>
 
-          <View style={[styles.detailCard, { backgroundColor: cardBg }, shadows.md]}>
+          <View {...selectable} style={[styles.detailCard, { backgroundColor: cardBg }, shadows.md]}>
             <View style={[styles.detailNumber, { backgroundColor: colors.primary }]}>
               <Text style={styles.detailNumberText}>{selectedName.id}</Text>
             </View>
@@ -110,6 +117,13 @@ const styles = StyleSheet.create({
   nameMeaning: { fontSize: 12, marginTop: 2 },
   detailContainer: { flex: 1, padding: spacing.md },
   backButton: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.lg, gap: spacing.sm },
+  screenBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
   backText: { fontSize: 16 },
   detailCard: { padding: spacing.xl, borderRadius: borderRadius.lg, alignItems: 'center' },
   detailNumber: { width: 56, height: 56, borderRadius: 28, justifyContent: 'center', alignItems: 'center', marginBottom: spacing.md },

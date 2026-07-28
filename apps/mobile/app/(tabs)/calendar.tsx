@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import { getPrayerTimesByCoords, HijriDate } from '../../src/services/prayerService';
@@ -32,6 +33,7 @@ const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CELL_SIZE = (SCREEN_WIDTH - spacing.md * 2 - spacing.sm * 6) / 7;
 
 export default function CalendarScreen() {
+  const router = useRouter();
   const { t, darkMode, language } = useApp();
   const [loading, setLoading] = useState(true);
   const [hijriDate, setHijriDate] = useState<HijriDate | null>(null);
@@ -233,6 +235,10 @@ export default function CalendarScreen() {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
+        <Touchable style={styles.screenBackButton} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={24} color={textColor} />
+          <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
+        </Touchable>
         {/* Header */}
         <View style={styles.header}>
           <Text style={[styles.title, { color: textColor }]}>{t('islamicCalendar')}</Text>
@@ -386,6 +392,14 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  screenBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
+  backText: { fontSize: 16 },
   header: {
     padding: spacing.md,
     paddingBottom: spacing.sm,

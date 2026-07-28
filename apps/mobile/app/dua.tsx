@@ -5,9 +5,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { useApp } from '../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../src/constants/theme';
 import { duaCategories, duas, DuaCategory, Dua } from '../src/services/duaService';
+import { useRouter } from 'expo-router';
 import Touchable from '../src/components/Touchable';
+import { selectable } from '../src/utils/selectable';
 
 export default function DuaScreen() {
+  const router = useRouter();
   const { t, darkMode, language } = useApp();
   const [selectedCategory, setSelectedCategory] = useState<DuaCategory>(duaCategories[0]);
   const [selectedDua, setSelectedDua] = useState<Dua | null>(null);
@@ -39,6 +42,10 @@ export default function DuaScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
+      <Touchable style={styles.screenBackButton} onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={24} color={textColor} />
+        <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
+      </Touchable>
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>Douas</Text>
         <Text style={[styles.subtitle, { color: colors.gold }]}>الأدعية</Text>
@@ -54,7 +61,7 @@ export default function DuaScreen() {
             <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
           </Touchable>
 
-          <View style={[styles.detailCard, { backgroundColor: cardBg }, shadows.md]}>
+          <View {...selectable} style={[styles.detailCard, { backgroundColor: cardBg }, shadows.md]}>
             <Text style={[styles.detailName, { color: textColor }]}>{selectedDua.name}</Text>
             <Text style={[styles.detailNameAr, { color: colors.gold }]}>{selectedDua.nameAr}</Text>
             
@@ -170,6 +177,13 @@ const styles = StyleSheet.create({
   emptyText: { marginTop: spacing.md, fontSize: 16 },
   detailContainer: { flex: 1, padding: spacing.md },
   backButton: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.lg, gap: spacing.sm },
+  screenBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
   backText: { fontSize: 16 },
   detailCard: { padding: spacing.xl, borderRadius: borderRadius.lg, alignItems: 'center' },
   detailName: { fontSize: 22, fontWeight: '700', marginBottom: spacing.xs },

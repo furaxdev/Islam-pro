@@ -116,6 +116,10 @@ export default function AudioScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
+      <Touchable style={styles.screenBackButton} onPress={() => router.back()}>
+        <Ionicons name="arrow-back" size={24} color={textColor} />
+        <Text style={[styles.backText, { color: textColor }]}>Retour</Text>
+      </Touchable>
       <View style={styles.header}>
         <Text style={[styles.title, { color: textColor }]}>{t('islamicPodcasts')}</Text>
       </View>
@@ -174,6 +178,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  screenBackButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.md,
+  },
+  backText: { fontSize: 16 },
   header: {
     padding: spacing.md,
     paddingBottom: spacing.sm,

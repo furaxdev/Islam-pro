@@ -14,6 +14,7 @@ import { Audio } from 'expo-av';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import { getFullSurahData, SurahDetail, Ayah } from '../../src/services/quranService';
+import { selectable } from '../../src/utils/selectable';
 import Touchable from '../../src/components/Touchable';
 
 export default function SurahScreen() {
@@ -247,7 +248,7 @@ export default function SurahScreen() {
       {/* Bismillah */}
       {arabicSurah && arabicSurah.number !== 1 && arabicSurah.number !== 9 && (
         <View style={[styles.bismillah, { backgroundColor: cardBg }]}>
-          <Text style={[styles.bismillahText, { color: textColor }]}>
+          <Text {...selectable} style={[styles.bismillahText, { color: textColor }]}>
             بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ
           </Text>
         </View>
@@ -299,13 +300,13 @@ export default function SurahScreen() {
             </View>
 
             {/* Arabic Text */}
-            <Text style={[styles.arabicText, { color: textColor }]}>
+            <Text {...selectable} style={[styles.arabicText, { color: textColor }]}>
               {ayah.text}
             </Text>
 
             {/* Translation */}
             {showTranslation && translationSurah?.ayahs[index] && (
-              <Text style={[styles.translationText, { color: textSecondary }]}>
+              <Text {...selectable} style={[styles.translationText, { color: textSecondary }]}>
                 {translationSurah.ayahs[index].text}
               </Text>
             )}
