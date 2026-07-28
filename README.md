@@ -61,19 +61,58 @@ par l'API et par l'app — c'est tout l'intérêt du monorepo.
 
 ## App Desktop (Tauri)
 
+Le wrapper Tauri embarque le build web de l'app Expo dans une fenêtre native
+(macOS `.dmg`, Windows `.exe`). Nécessite **Rust** + la Tauri CLI.
+
 ```bash
 cd apps/mobile
 pnpm desktop:build     # génère apps/mobile/src-tauri/target/release/bundle/*
 ```
 
+Pour produire l'installeur macOS prêt à distribuer (renomme le volume + copie le
+`.dmg` final dans `apps/mobile/builds/`) :
+
+```bash
+cd apps/mobile/src-tauri
+bash build-installer.sh              # CPU illimité
+CARGO_BUILD_JOBS=4 bash build-installer.sh   # limite la compilation Rust à 4 cœurs
+```
+
+## Notifications
+
+L'app peut notifier chaque prière avec le son de l'Adhan :
+
+- **iOS / Android** : notifications locales programmées via `expo-notifications`
+  (le son `assets/sounds/adhan.wav` est déclaré dans `app.json`).
+- **Desktop / Web** : `expo-notifications` étant inopérant hors mobile, un chemin
+  parallèle (`src/services/webNotifications.ts`) utilise l'API Web `Notification`
+  + `<Audio>`. Limite : les notifs ne se déclenchent que **quand l'app est ouverte**
+  (pas de service en arrière-plan dans le webview).
+
+Un bouton **« Notification de test »** est disponible dans les réglages.
+
 ## Déploiement
 
-- **Web + API** : Render (voir `render.yaml`) — auto-deploy à chaque push sur `main`.
+- **Render est abandonné** — l'app n'est plus distribuée comme site hébergé.
 - **Mobile** : builds EAS (le `projectId` EAS est dans `apps/mobile/app.json`).
-- **Desktop** : `.dmg` / `.exe` distribués hors store.
+- **Desktop** : `.dmg` (macOS) / `.exe` (Windows) distribués hors store.
 
 ## Note
 
 Le frontend n'utilise **aucune variable d'environnement** — toutes les données
 viennent d'APIs publiques (Aladhan, AlQuran Cloud, cdn.islamic.network). Seule
 l'API a besoin de `MONGO_URL` / `DB_NAME`.
+
+## Crédits
+
+- Son de l'Adhan : *« The Adhan - Muslim Call to Prayer »* par Aaqib Azeez,
+  Wikimedia Commons, sous licence **CC BY-SA 4.0**.
+
+## License
+
+© 2026 furaxdev — distribué sous **[PolyForm Noncommercial License 1.0.0](./LICENSE)**.
+
+Usage, modification et redistribution libres à des fins **non commerciales**
+(personnel, éducatif, associatif, religieux…). Toute exploitation commerciale
+nécessite une autorisation. Le son de l'Adhan conserve sa propre licence
+CC BY-SA 4.0 (voir Crédits).

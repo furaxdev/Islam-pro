@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "description": "Islam Pro monorepo — Expo app (apps/mobile), Hono API (apps/api), shared TS types (packages/shared).",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "author": "furaxdev",
   "packageManager": "pnpm@9.15.0",
   "scripts": {
     "mobile": "pnpm --filter @islam-pro/mobile start",
