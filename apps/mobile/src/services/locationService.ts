@@ -12,20 +12,56 @@ export interface Coords {
 // no OS entitlement), so requestForegroundPermissionsAsync() silently stays
 // stuck instead of resolving to 'granted' or 'denied'. IP-based lookup gives
 // an approximate location without needing that prompt at all.
+//
+// ipapi.co alone isn't reliable here: it echoes back the request's exact
+// Origin instead of sending `*`, and that specific-origin response was
+// observed failing with a generic "Network Error" from this app's webview
+// (desktop/Tauri) even though the same request works fine from curl and
+// from a plain browser — try wildcard-CORS providers first since those seem
+// to be more consistently reachable from embedded/non-browser webviews.
+const IP_PROVIDERS: Array<{ url: string; parse: (data: any) => Coords | null }> = [
+  {
+    url: 'https://get.geojs.io/v1/ip/geo.json',
+    parse: (data) => {
+      const lat = parseFloat(data?.latitude);
+      const lon = parseFloat(data?.longitude);
+      return Number.isFinite(lat) && Number.isFinite(lon) ? { latitude: lat, longitude: lon } : null;
+    },
+  },
+  {
+    url: 'https://ipwho.is/',
+    parse: (data) => {
+      if (data?.success === false) return null;
+      const lat = Number(data?.latitude);
+      const lon = Number(data?.longitude);
+      return Number.isFinite(lat) && Number.isFinite(lon) ? { latitude: lat, longitude: lon } : null;
+    },
+  },
+  {
+    url: 'https://ipapi.co/json/',
+    parse: (data) => {
+      const lat = Number(data?.latitude);
+      const lon = Number(data?.longitude);
+      return Number.isFinite(lat) && Number.isFinite(lon) ? { latitude: lat, longitude: lon } : null;
+    },
+  },
+];
+
 async function getIpLocation(): Promise<Coords | null> {
-  try {
-    const { data } = await withTimeout(
-      axios.get('https://ipapi.co/json/'),
-      5000,
-      'IP location lookup timed out'
-    );
-    if (typeof data?.latitude === 'number' && typeof data?.longitude === 'number') {
-      return { latitude: data.latitude, longitude: data.longitude };
+  for (const provider of IP_PROVIDERS) {
+    try {
+      const { data } = await withTimeout(
+        axios.get(provider.url),
+        5000,
+        'IP location lookup timed out'
+      );
+      const coords = provider.parse(data);
+      if (coords) return coords;
+    } catch {
+      // try the next provider
     }
-    return null;
-  } catch {
-    return null;
   }
+  return null;
 }
 
 export async function getDeviceLocation(): Promise<Coords | null> {
