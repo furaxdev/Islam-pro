@@ -1,5 +1,7 @@
 # Islam Pro
 
+![Islam Pro](apps/mobile/store-assets/play-feature-graphic-1024x500.png)
+
 *Votre compagnon musulman au quotidien 🕌*
 
 Application islamique complète (horaires de prière, Coran, Qibla, Dhikr, calendrier
