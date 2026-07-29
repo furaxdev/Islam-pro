@@ -496,6 +496,22 @@ button {
   height: 34px;
   background: var(--night);
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px 0 20px;
+  color: var(--manuscript);
+}
+.phone-time {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+.phone-status-icons {
+  width: 56px;
+  height: auto;
+  color: var(--manuscript);
 }
 .phone-shot {
   position: absolute;

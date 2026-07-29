@@ -8,6 +8,7 @@ import {
   TextInput,
   Modal,
   FlatList,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,6 +28,7 @@ import { withTimeout } from '../../src/utils/withTimeout';
 import {
   savePrayerTimings,
   applyPrayerNotifications,
+  sendTestNotification,
 } from '../../src/services/notificationService';
 
 const POPULAR_CITIES = [
@@ -200,6 +202,18 @@ export default function PrayerScreen() {
       ]
     : [];
 
+  // Debug-only (desktop web build): tapping a prayer fires its notification
+  // immediately, since there's no way to fast-forward the clock to test the
+  // real scheduled trigger on that platform.
+  const handleDebugPrayerTap = (prayerName: string) => {
+    if (Platform.OS !== 'web') return;
+    sendTestNotification(
+      getPrayerNameTranslation(prayerName),
+      t('prayerTimeNotifBody'),
+      adhanSound
+    );
+  };
+
   const getPrayerNameTranslation = (name: string) => {
     const translations: Record<string, string> = {
       Fajr: t('fajr'),
@@ -269,8 +283,10 @@ export default function PrayerScreen() {
           <View style={styles.prayerList}>
             {prayersList.map((prayer, index) => {
               const isNext = nextPrayer?.name === prayer.name;
+              const debuggable = Platform.OS === 'web' && prayer.name !== 'Sunrise';
+              const ItemContainer = debuggable ? Touchable : View;
               return (
-                <View
+                <ItemContainer
                   key={prayer.name}
                   style={[
                     styles.prayerItem,
@@ -278,6 +294,7 @@ export default function PrayerScreen() {
                     isNext && { borderColor: colors.gold, borderWidth: 2 },
                     shadows.sm,
                   ]}
+                  {...(debuggable ? { onPress: () => handleDebugPrayerTap(prayer.name) } : {})}
                 >
                   <View style={[styles.prayerIcon, { backgroundColor: prayer.color }]}>
                     <Ionicons name={prayer.icon as any} size={24} color="#FFF" />
@@ -295,7 +312,7 @@ export default function PrayerScreen() {
                   <Text style={[styles.prayerTime, { color: textColor }]}>
                     {prayer.time.substring(0, 5)}
                   </Text>
-                </View>
+                </ItemContainer>
               );
             })}
           </View>
