@@ -44,3 +44,6 @@ There is no custom backend for content — screens call public third-party APIs 
 - **Render has been abandoned** (services deleted). The app is distributed as a mobile app and a desktop app, not a hosted website.
 - **Mobile** (iOS/Android): EAS builds — `apps/mobile/app.json` already contains `extra.eas.projectId` and `owner`, so EAS builds should target that existing project rather than creating a new one.
 - **Desktop** (macOS/Windows): Tauri bundles in `apps/mobile/src-tauri/target/release/bundle/`.
+
+## Git workflow
+- Always commit and push after making changes in this repo, without waiting to be asked each time — the user only needs to say otherwise if they want changes left uncommitted.
