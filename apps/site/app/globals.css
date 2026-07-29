@@ -499,7 +499,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 18px 0 20px;
+  padding: 0 22px 0 20px;
   color: var(--manuscript);
 }
 .phone-time {
@@ -528,14 +528,24 @@ button {
 }
 .phone-island {
   position: absolute;
-  top: 10px;
-  left: 50%;
+  top: 11px;
+  left: 46%;
   transform: translateX(-50%);
-  width: 76px;
-  height: 20px;
+  width: 60px;
+  height: 18px;
   border-radius: 999px;
   background: #000;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 9px;
+}
+.phone-camera {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #3a5570, #050708 70%);
 }
 
 /* ---------- trust section ---------- */

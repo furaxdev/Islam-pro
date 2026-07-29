@@ -29,7 +29,9 @@ export default function PhoneFrame({ src, alt }: { src: string; alt: string }) {
             <rect x="75.5" y="5.5" width="1.8" height="5" rx="0.9" fill="currentColor" />
           </svg>
         </div>
-        <div className="phone-island" />
+        <div className="phone-island">
+          <span className="phone-camera" />
+        </div>
         <div className="phone-shot">
           <Image src={src} alt={alt} fill sizes="232px" />
         </div>
