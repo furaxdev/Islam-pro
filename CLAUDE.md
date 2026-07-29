@@ -9,6 +9,7 @@ This is a **pnpm workspace monorepo** (`pnpm-workspace.yaml`, root `.npmrc` sets
 - `apps/mobile` — Expo (React Native + expo-router) app, targets iOS, Android, and Web. This is where almost all product code lives. Package name `@islam-pro/mobile`.
   - `apps/mobile/src-tauri` — Tauri (Rust) wrapper that ships the Expo web build as a native desktop app (`.dmg` / `.exe`).
 - `apps/api` — Hono + TypeScript service (Node), package `@islam-pro/api`. Exposes `/api/health` and MongoDB-backed `/api/status`. **It is not the data source** for prayer times, Quran, or hadith content — the app does not currently call it.
+- `apps/site` — Next.js marketing/landing page, package `@islam-pro/site`. Static one-pager (App Router) deployed on Vercel; not connected to the app's data layer beyond a live client-side fetch to the public Aladhan API for the hero's prayer-time display.
 - `packages/shared` — shared TypeScript types (`@islam-pro/shared`), imported by both `apps/api` and `apps/mobile` so the API contract stays in sync.
 
 ## Commands
@@ -22,6 +23,7 @@ Run from the repo root (pnpm). `corepack enable` first if pnpm is missing.
 - `pnpm lint` — `expo lint` on the mobile app.
 - `pnpm typecheck` — typecheck every package (`pnpm -r typecheck`).
 - Desktop: `cd apps/mobile && pnpm desktop:build` (needs Rust + Tauri CLI).
+- Marketing site: `cd apps/site && pnpm dev` (or `pnpm build && pnpm start`).
 - No test script is currently defined.
 
 ## Architecture
@@ -41,9 +43,10 @@ There is no custom backend for content — screens call public third-party APIs 
 - Types shared with the API belong in `packages/shared` (e.g. `PrayerTimes`, `HijriDate`), re-exported by the relevant service.
 
 ### Deployment
-- **Render has been abandoned** (services deleted). The app is distributed as a mobile app and a desktop app, not a hosted website.
+- **Render has been abandoned** (services deleted). The app itself is distributed as a mobile app and a desktop app, not a hosted website.
 - **Mobile** (iOS/Android): EAS builds — `apps/mobile/app.json` already contains `extra.eas.projectId` and `owner`, so EAS builds should target that existing project rather than creating a new one.
 - **Desktop** (macOS/Windows): Tauri bundles in `apps/mobile/src-tauri/target/release/bundle/`.
+- **Marketing site** (`apps/site`): deployed on Vercel, separate from the app itself.
 
 ## Git workflow
 - Always commit and push after making changes in this repo, without waiting to be asked each time — the user only needs to say otherwise if they want changes left uncommitted.
