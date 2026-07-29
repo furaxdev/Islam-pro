@@ -7,14 +7,29 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-DMG_DIR="src-tauri/target/release/bundle/dmg"
-SRC_DMG="$DMG_DIR/Islam Pro_1.0.0_x64.dmg"
+# Set TAURI_TARGET to cross-compile (e.g. from an Apple Silicon CI runner to
+# an Intel Mac via "x86_64-apple-darwin"). Empty = build for the host arch,
+# same as running this locally.
+TARGET="${TAURI_TARGET:-}"
+if [ -n "$TARGET" ]; then
+  DMG_DIR="src-tauri/target/$TARGET/release/bundle/dmg"
+  BUILD_ARGS=(--bundles dmg --target "$TARGET")
+  case "$TARGET" in
+    aarch64-*) ARCH_SUFFIX="aarch64" ;;
+    *) ARCH_SUFFIX="x64" ;;
+  esac
+else
+  DMG_DIR="src-tauri/target/release/bundle/dmg"
+  BUILD_ARGS=(--bundles dmg)
+  ARCH_SUFFIX="x64"
+fi
+SRC_DMG="$DMG_DIR/Islam Pro_1.0.0_${ARCH_SUFFIX}.dmg"
 FINAL_NAME="Islam Pro Installer"
 RW_DMG="/tmp/islam-pro-installer-rw.dmg"
 BUILDS_DIR="builds"
 
 rm -rf "$DMG_DIR"
-pnpm exec tauri build --bundles dmg
+pnpm exec tauri build "${BUILD_ARGS[@]}"
 
 rm -f "$RW_DMG"
 hdiutil convert "$SRC_DMG" -format UDRW -o "$RW_DMG"

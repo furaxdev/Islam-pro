@@ -1,0 +1,44 @@
+name: Build Desktop (macOS)
+
+# Manual only — this builds the Tauri .dmg on GitHub's macOS runners instead
+# of locally, since the Rust compile is heavy enough to peg an older Mac's
+# CPU. Trigger from the Actions tab, or: gh workflow run build-desktop.yml
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    # GitHub's macos-latest runner is Apple Silicon (arm64); cross-compile to
+    # Intel (x86_64) since that's what runs on the target Mac.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install Rust (with Intel target)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-apple-darwin
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build the .dmg
+        working-directory: apps/mobile/src-tauri
+        env:
+          TAURI_TARGET: x86_64-apple-darwin
+        run: bash build-installer.sh
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: islam-pro-installer-dmg
+          path: apps/mobile/builds/*.dmg
+          retention-days: 30
