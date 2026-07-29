@@ -12,8 +12,8 @@ API Hono (TypeScript), et types partagés.
 
 - **📱 Android (APK)** : [télécharger la dernière version](https://expo.dev/artifacts/eas/KQkugG_9gpYqHa4eezroNTPbc32vTxOCEQYr1qeQc5Q.apk)
   — ouvre ce lien depuis le téléphone, installe l'APK (autorise « sources inconnues » si demandé).
-- **🖥️ macOS** : voir [App Desktop (Tauri)](#app-desktop-tauri) pour générer le `.dmg`.
-- **🍎 iOS** : build EAS à venir (nécessite un compte Apple Developer).
+- ** macOS** : voir [App Desktop (Tauri)](#app-desktop-tauri) pour générer le `.dmg`.
+- ** iOS** : build EAS à venir (nécessite un compte Apple Developer).
 
 > Le lien de l'APK provient d'EAS Build et peut expirer au bout de ~30 jours ;
 > reconstruis avec `eas build --platform android --profile preview` (depuis
