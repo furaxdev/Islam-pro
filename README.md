@@ -1,6 +1,6 @@
 # Islam Pro
 
-![Islam Pro](apps/mobile/store-assets/play-feature-graphic-1024x500.png)
+![Islam Pro](apps/mobile/store-assets/play-feature-graphic-1024x500-rounded.png)
 
 *Votre compagnon musulman au quotidien 🕌*
 
