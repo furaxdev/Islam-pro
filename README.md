@@ -2,8 +2,6 @@
 
 ![Islam Pro](apps/mobile/store-assets/play-feature-graphic-1024x500.png)
 
-*Votre compagnon musulman au quotidien 🕌*
-
 Application islamique complète (horaires de prière, Coran, Qibla, Dhikr, calendrier
 hijri, hadiths, douas…). Monorepo **pnpm** : app Expo (iOS / Android / Web / Desktop),
 API Hono (TypeScript), et types partagés.
