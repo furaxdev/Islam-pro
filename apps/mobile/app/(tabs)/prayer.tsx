@@ -75,7 +75,7 @@ const POPULAR_CITIES = [
 ];
 
 export default function PrayerScreen() {
-  const { t, darkMode, language, location, setLocation, prayerNotifications, adhanSound } = useApp();
+  const { t, darkMode, language, location, setLocation, prayerNotifications, adhanSound, adhanSoundId } = useApp();
   const [loading, setLoading] = useState(true);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
   const [hijriDate, setHijriDate] = useState<HijriDate | null>(null);
@@ -106,7 +106,7 @@ export default function PrayerScreen() {
 
   const persistAndSchedule = async (timings: PrayerTimes) => {
     await savePrayerTimings(timings);
-    await applyPrayerNotifications(t, prayerNotifications, adhanSound, timings);
+    await applyPrayerNotifications(t, prayerNotifications, adhanSound, timings, adhanSoundId);
   };
 
   const loadPrayerTimes = async () => {
@@ -222,7 +222,8 @@ export default function PrayerScreen() {
     sendTestNotification(
       getPrayerNameTranslation(prayerName),
       t('prayerTimeNotifBody'),
-      adhanSound
+      adhanSound,
+      adhanSoundId
     );
   };
 

@@ -14,11 +14,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Constants from 'expo-constants';
+import { Audio } from 'expo-av';
 import { useApp } from '../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../src/constants/theme';
 import { Language } from '../src/i18n/translations';
 import Touchable from '../src/components/Touchable';
 import { applyPrayerNotifications, sendTestNotification } from '../src/services/notificationService';
+import { ADHAN_SOUNDS, getAdhanSound } from '../src/data/adhanSounds';
 
 const LANGUAGES: { code: Language; name: string; nativeName: string }[] = [
   { code: 'fr', name: 'French', nativeName: 'Français' },
@@ -70,10 +72,15 @@ export default function SettingsScreen() {
     setPrayerNotifications,
     adhanSound,
     setAdhanSound,
+    adhanSoundId,
+    setAdhanSoundId,
   } = useApp();
 
   const [showMethodPicker, setShowMethodPicker] = React.useState(false);
   const [showReciterPicker, setShowReciterPicker] = React.useState(false);
+  const [showAdhanPicker, setShowAdhanPicker] = React.useState(false);
+  const [previewingId, setPreviewingId] = React.useState<string | null>(null);
+  const previewSoundRef = React.useRef<Audio.Sound | null>(null);
   const [secretTapCount, setSecretTapCount] = React.useState(0);
   const [showDevMenu, setShowDevMenu] = React.useState(false);
 
@@ -85,19 +92,59 @@ export default function SettingsScreen() {
   const handlePrayerNotificationsToggle = async (value: boolean) => {
     setPrayerNotifications(value);
     // Reschedule (or cancel) using the last saved timings.
-    await applyPrayerNotifications(t, value, adhanSound);
+    await applyPrayerNotifications(t, value, adhanSound, undefined, adhanSoundId);
   };
 
   const handleAdhanSoundToggle = async (value: boolean) => {
     setAdhanSound(value);
-    await applyPrayerNotifications(t, prayerNotifications, value);
+    await applyPrayerNotifications(t, prayerNotifications, value, undefined, adhanSoundId);
   };
+
+  const handleAdhanSoundIdChange = async (id: string) => {
+    setAdhanSoundId(id);
+    await applyPrayerNotifications(t, prayerNotifications, adhanSound, undefined, id);
+  };
+
+  const stopPreview = async () => {
+    if (previewSoundRef.current) {
+      await previewSoundRef.current.unloadAsync().catch(() => {});
+      previewSoundRef.current = null;
+    }
+    setPreviewingId(null);
+  };
+
+  const togglePreview = async (id: string) => {
+    if (previewingId === id) {
+      await stopPreview();
+      return;
+    }
+    await stopPreview();
+    try {
+      const { sound } = await Audio.Sound.createAsync(getAdhanSound(id).fullFile, { shouldPlay: true });
+      previewSoundRef.current = sound;
+      setPreviewingId(id);
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (status.isLoaded && status.didJustFinish) {
+          stopPreview();
+        }
+      });
+    } catch {
+      setPreviewingId(null);
+    }
+  };
+
+  React.useEffect(() => {
+    return () => {
+      previewSoundRef.current?.unloadAsync().catch(() => {});
+    };
+  }, []);
 
   const handleTestNotification = async () => {
     const sent = await sendTestNotification(
       t('testTitle'),
       t('testBody'),
-      adhanSound
+      adhanSound,
+      adhanSoundId
     );
     if (sent) {
       const msg = Platform.OS === 'web' ? t('testSentWeb') : t('testSentMobile');
@@ -263,6 +310,22 @@ export default function SettingsScreen() {
 
             <Touchable
               style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}
+              onPress={() => setShowAdhanPicker(true)}
+            >
+              <View style={styles.optionContent}>
+                <View style={styles.optionIconRow}>
+                  <Ionicons name="musical-notes" size={20} color={colors.gold} />
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('adhanChoice')}</Text>
+                </View>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]} numberOfLines={1}>
+                  {getAdhanSound(adhanSoundId).name}
+                </Text>
+              </View>
+              <Ionicons name="chevron-forward" size={20} color={textSecondary} />
+            </Touchable>
+
+            <Touchable
+              style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}
               onPress={handleTestNotification}
             >
               <View style={styles.optionContent}>
@@ -420,7 +483,7 @@ export default function SettingsScreen() {
                 {t('appDescription')}
               </Text>
               <Text style={[styles.appVersion, { color: textSecondary, marginTop: spacing.sm }]}>
-                {t('adhanCredit')}
+                {t('adhanCredit')} : {getAdhanSound(adhanSoundId).credit}
               </Text>
             </View>
           </View>
@@ -502,6 +565,63 @@ export default function SettingsScreen() {
         RECITERS,
         reciter,
         setReciter
+      )}
+
+      {showAdhanPicker && (
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: cardBg }]}>
+            <View style={styles.modalHeader}>
+              <Text style={[styles.modalTitle, { color: textColor }]}>{t('adhanChoice')}</Text>
+              <Touchable
+                onPress={() => {
+                  stopPreview();
+                  setShowAdhanPicker(false);
+                }}
+              >
+                <Ionicons name="close" size={28} color={textColor} />
+              </Touchable>
+            </View>
+            <ScrollView style={styles.modalScroll}>
+              {ADHAN_SOUNDS.map((item) => (
+                <View
+                  key={item.id}
+                  style={[
+                    styles.pickerItem,
+                    { borderBottomColor: bgColor },
+                    adhanSoundId === item.id && { backgroundColor: colors.primary + '20' },
+                  ]}
+                >
+                  <Touchable
+                    style={styles.adhanPreviewButton}
+                    onPress={() => togglePreview(item.id)}
+                  >
+                    <Ionicons
+                      name={previewingId === item.id ? 'stop-circle' : 'play-circle'}
+                      size={30}
+                      color={colors.gold}
+                    />
+                  </Touchable>
+                  <Touchable
+                    style={styles.adhanPickerLabel}
+                    onPress={() => {
+                      handleAdhanSoundIdChange(item.id);
+                      stopPreview();
+                      setShowAdhanPicker(false);
+                    }}
+                  >
+                    <Text style={[styles.pickerItemText, { color: textColor }]}>{item.name}</Text>
+                    <Text style={[styles.adhanCreditText, { color: textSecondary }]} numberOfLines={1}>
+                      {item.credit}
+                    </Text>
+                  </Touchable>
+                  {adhanSoundId === item.id && (
+                    <Ionicons name="checkmark-circle" size={24} color={colors.gold} />
+                  )}
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
       )}
     </SafeAreaView>
   );
@@ -602,4 +722,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   pickerItemText: { fontSize: 15, flex: 1, marginRight: spacing.sm },
+  adhanPreviewButton: { marginRight: spacing.sm },
+  adhanPickerLabel: { flex: 1, marginRight: spacing.sm },
+  adhanCreditText: { fontSize: 11, marginTop: 2 },
 });

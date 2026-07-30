@@ -49,7 +49,12 @@
         "expo-notifications",
         {
           "color": "#1B5E20",
-          "sounds": ["./assets/sounds/adhan.wav"]
+          "sounds": [
+            "./assets/sounds/adhan-mecca.wav",
+            "./assets/sounds/adhan-maghrib.wav",
+            "./assets/sounds/adhan-hassan2.wav",
+            "./assets/sounds/adhan-beautiful.wav"
+          ]
         }
       ]
     ],

@@ -31,6 +31,8 @@ interface AppContextType {
   setPrayerNotifications: (value: boolean) => void;
   adhanSound: boolean;
   setAdhanSound: (value: boolean) => void;
+  adhanSoundId: string;
+  setAdhanSoundId: (value: string) => void;
   isReady: boolean;
 }
 
@@ -46,6 +48,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [fontSize, setFontSizeState] = useState<'small' | 'medium' | 'large'>('medium');
   const [prayerNotifications, setPrayerNotificationsState] = useState(true);
   const [adhanSound, setAdhanSoundState] = useState(true);
+  const [adhanSoundId, setAdhanSoundIdState] = useState('mecca');
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -65,6 +68,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const savedFontSize = await AsyncStorage.getItem('fontSize');
       const savedPrayerNotifications = await AsyncStorage.getItem('prayerNotifications');
       const savedAdhanSound = await AsyncStorage.getItem('adhanSound');
+      const savedAdhanSoundId = await AsyncStorage.getItem('adhanSoundId');
 
       if (savedLang) {
         setLanguageState(savedLang as Language);
@@ -105,6 +109,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       if (savedAdhanSound !== null) {
         setAdhanSoundState(savedAdhanSound === 'true');
+      }
+
+      if (savedAdhanSoundId) {
+        setAdhanSoundIdState(savedAdhanSoundId);
       }
     } catch (error) {
       console.error('Error loading settings:', error);
@@ -151,6 +159,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     await AsyncStorage.setItem('adhanSound', value.toString());
   };
 
+  const setAdhanSoundId = async (value: string) => {
+    setAdhanSoundIdState(value);
+    await AsyncStorage.setItem('adhanSoundId', value);
+  };
+
   const saveLocation = async (loc: Location | null) => {
     setLocation(loc);
     if (loc) {
@@ -189,6 +202,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setPrayerNotifications,
         adhanSound,
         setAdhanSound,
+        adhanSoundId,
+        setAdhanSoundId,
         isReady,
       }}
     >

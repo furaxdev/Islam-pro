@@ -116,8 +116,8 @@ l'API a besoin de `MONGO_URL` / `DB_NAME`.
 
 ## Crédits
 
-- Son de l'Adhan : *« The Adhan - Muslim Call to Prayer »* par Aaqib Azeez,
-  Wikimedia Commons, sous licence **CC BY-SA 4.0**.
+- Son de l'Adhan : enregistrement à la Grande Mosquée de La Mecque par Seyfula Islam,
+  Wikimedia Commons, sous licence **CC BY 3.0**.
 
 ## License
 

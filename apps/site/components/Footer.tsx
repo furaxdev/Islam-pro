@@ -35,7 +35,7 @@ export default function Footer() {
             © 2026 <strong>furaxdev</strong> — PolyForm Noncommercial License 1.0.0
           </span>
           <span>
-            Son de l&apos;Adhan : Aaqib Azeez, Wikimedia Commons, CC BY-SA 4.0
+            Son de l&apos;Adhan : Grande Mosquée de La Mecque, Seyfula Islam, Wikimedia Commons, CC BY 3.0
           </span>
         </div>
       </div>

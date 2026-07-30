@@ -98,6 +98,7 @@ export const translations = {
 
     // Settings screen
     prayerSettings: 'Paramètres de prière',
+    adhanChoice: "Choix de l'Adhan",
     prayerNotifications: 'Notifications de prière',
     prayerNotificationsDesc: 'Rappels avant chaque prière',
     adhanSoundLabel: "Son de l'Adhan",
@@ -118,8 +119,7 @@ export const translations = {
     clearCacheDesc: "Libérer de l'espace",
     appDescription:
       'Application complète pour les musulmans : horaires de prière, Coran, hadiths, podcasts et bien plus.',
-    adhanCredit:
-      'Son de l\'Adhan : "The Adhan - Muslim Call to Prayer" par Aaqib Azeez, Wikimedia Commons, CC BY-SA 4.0',
+    adhanCredit: "Son de l'Adhan",
     featuresTitle: 'Fonctionnalités',
     support: 'Support',
     rateApp: "Noter l'application",
@@ -252,6 +252,7 @@ export const translations = {
 
     // Settings screen
     prayerSettings: 'إعدادات الصلاة',
+    adhanChoice: 'اختيار الأذان',
     prayerNotifications: 'إشعارات الصلاة',
     prayerNotificationsDesc: 'تذكير قبل كل صلاة',
     adhanSoundLabel: 'صوت الأذان',
@@ -272,8 +273,7 @@ export const translations = {
     clearCacheDesc: 'تحرير مساحة',
     appDescription:
       'تطبيق شامل للمسلمين: مواقيت الصلاة، القرآن، الأحاديث، البودكاست والمزيد.',
-    adhanCredit:
-      'صوت الأذان: "The Adhan - Muslim Call to Prayer" لعاقب عزيز، ويكيميديا كومنز، CC BY-SA 4.0',
+    adhanCredit: 'صوت الأذان',
     featuresTitle: 'الميزات',
     support: 'الدعم',
     rateApp: 'قيّم التطبيق',
@@ -406,6 +406,7 @@ export const translations = {
 
     // Settings screen
     prayerSettings: 'Prayer settings',
+    adhanChoice: 'Adhan choice',
     prayerNotifications: 'Prayer notifications',
     prayerNotificationsDesc: 'Reminders before each prayer',
     adhanSoundLabel: 'Adhan sound',
@@ -426,8 +427,7 @@ export const translations = {
     clearCacheDesc: 'Free up space',
     appDescription:
       'A complete app for Muslims: prayer times, Quran, hadiths, podcasts and much more.',
-    adhanCredit:
-      'Adhan sound: "The Adhan - Muslim Call to Prayer" by Aaqib Azeez, Wikimedia Commons, CC BY-SA 4.0',
+    adhanCredit: 'Adhan sound',
     featuresTitle: 'Features',
     support: 'Support',
     rateApp: 'Rate the app',

@@ -3,6 +3,7 @@ import {
   requestPermission,
   sendNotification,
 } from '@tauri-apps/plugin-notification';
+import { ADHAN_SOUNDS, getAdhanSound } from '../data/adhanSounds';
 
 // Desktop/web notification path.
 //
@@ -37,8 +38,11 @@ import {
 //      plays; the automatically-scheduled prayer sounds play too as long as the
 //      user has interacted with the window at least once this session.
 
-// Metro resolves an asset require() to a URL string on web.
-const ADHAN_SOUND_URI: string = require('../../assets/sounds/adhan.wav');
+// Metro resolves an asset require() to a URL string on web. Build a lookup
+// from adhan id -> short-clip URL, keyed the same way ADHAN_SOUNDS is.
+const ADHAN_SOUND_URIS: Record<string, string> = Object.fromEntries(
+  ADHAN_SOUNDS.map((a) => [a.id, a.shortFile as unknown as string])
+);
 
 // Track pending prayer timers so a reschedule can cancel the previous batch.
 let scheduledTimers: ReturnType<typeof setTimeout>[] = [];
@@ -74,9 +78,10 @@ export async function ensureWebPermission(): Promise<boolean> {
   }
 }
 
-function playAdhan(): void {
+function playAdhan(soundId: string): void {
   try {
-    const audio = new Audio(ADHAN_SOUND_URI);
+    const uri = ADHAN_SOUND_URIS[soundId] ?? ADHAN_SOUND_URIS[getAdhanSound(soundId).id];
+    const audio = new Audio(uri);
     audio.volume = 1;
     // Ignore autoplay rejections — the notification still shows either way.
     audio.play().catch(() => {});
@@ -88,23 +93,24 @@ function playAdhan(): void {
 // Tauri-only path (see file header): raw AudioContext buffer playback, not
 // an <audio> element, so macOS doesn't surface it as a Now Playing session.
 let audioCtx: AudioContext | null = null;
-let adhanBufferPromise: Promise<AudioBuffer | null> | null = null;
+const adhanBufferPromises: Record<string, Promise<AudioBuffer | null>> = {};
 
-function loadAdhanBuffer(ctx: AudioContext): Promise<AudioBuffer | null> {
-  if (!adhanBufferPromise) {
-    adhanBufferPromise = fetch(ADHAN_SOUND_URI)
+function loadAdhanBuffer(ctx: AudioContext, soundId: string): Promise<AudioBuffer | null> {
+  if (!adhanBufferPromises[soundId]) {
+    const uri = ADHAN_SOUND_URIS[soundId] ?? ADHAN_SOUND_URIS[getAdhanSound(soundId).id];
+    adhanBufferPromises[soundId] = fetch(uri)
       .then((res) => res.arrayBuffer())
       .then((data) => ctx.decodeAudioData(data))
       .catch(() => null);
   }
-  return adhanBufferPromise;
+  return adhanBufferPromises[soundId];
 }
 
-async function playAdhanViaWebAudio(): Promise<void> {
+async function playAdhanViaWebAudio(soundId: string): Promise<void> {
   try {
     const ctx = audioCtx ?? (audioCtx = new AudioContext());
     if (ctx.state === 'suspended') await ctx.resume().catch(() => {});
-    const buffer = await loadAdhanBuffer(ctx);
+    const buffer = await loadAdhanBuffer(ctx, soundId);
     if (!buffer) return;
     const source = ctx.createBufferSource();
     source.buffer = buffer;
@@ -118,18 +124,19 @@ async function playAdhanViaWebAudio(): Promise<void> {
 export async function showWebNotification(
   title: string,
   body: string,
-  sound: boolean
+  sound: boolean,
+  soundId: string = 'mecca'
 ): Promise<boolean> {
   const granted = await ensureWebPermission();
   if (!granted) return false;
   try {
     if (isTauri()) {
       sendNotification({ title, body });
-      if (sound) void playAdhanViaWebAudio();
+      if (sound) void playAdhanViaWebAudio(soundId);
     } else {
       // eslint-disable-next-line no-new
       new Notification(title, { body });
-      if (sound) playAdhan();
+      if (sound) playAdhan(soundId);
     }
     return true;
   } catch {
@@ -155,7 +162,8 @@ interface WebPrayer {
 export function scheduleWebPrayerNotifications(
   prayers: WebPrayer[],
   body: string,
-  sound: boolean
+  sound: boolean,
+  soundId: string = 'mecca'
 ): void {
   cancelWebPrayerNotifications();
   if (!isTauri() && !hasNotificationApi()) return;
@@ -171,7 +179,7 @@ export function scheduleWebPrayerNotifications(
     if (delay <= 0) continue; // already passed today
 
     const timer = setTimeout(() => {
-      void showWebNotification(prayer.title, body, sound);
+      void showWebNotification(prayer.title, body, sound, soundId);
     }, delay);
     scheduledTimers.push(timer);
   }

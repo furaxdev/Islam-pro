@@ -8,6 +8,11 @@ import {
   showWebNotification,
 } from './webNotifications';
 
+/** expo-notifications takes a bundled sound by filename (as declared in app.json). */
+function soundFileName(adhanSoundId: string): string {
+  return `adhan-${adhanSoundId}.wav`;
+}
+
 const STORAGE_KEY = 'lastPrayerTimings';
 // Sunrise is intentionally excluded — it is not a prayer, just an informational time.
 const PRAYER_ORDER: (keyof PrayerTimes)[] = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
@@ -31,7 +36,7 @@ export async function configureNotifications(): Promise<void> {
     await Notifications.setNotificationChannelAsync(ANDROID_CHANNEL_ID, {
       name: 'Prayer times',
       importance: Notifications.AndroidImportance.HIGH,
-      sound: 'adhan.wav',
+      sound: 'default',
       vibrationPattern: [0, 250, 250, 250],
     }).catch(() => {});
   }
@@ -64,6 +69,7 @@ async function getSavedTimings(): Promise<PrayerTimes | null> {
 interface SyncOptions {
   enabled: boolean;
   sound: boolean;
+  soundId: string;
   labels: Record<string, string>;
   body: string;
   timings?: PrayerTimes | null;
@@ -87,7 +93,7 @@ async function syncPrayerNotifications(opts: SyncOptions): Promise<void> {
         ? [{ time: raw.substring(0, 5), title: opts.labels[key] ?? String(key) }]
         : [];
     });
-    scheduleWebPrayerNotifications(prayers, opts.body, opts.sound);
+    scheduleWebPrayerNotifications(prayers, opts.body, opts.sound, opts.soundId);
     return;
   }
 
@@ -110,7 +116,7 @@ async function syncPrayerNotifications(opts: SyncOptions): Promise<void> {
       content: {
         title: opts.labels[key] ?? String(key),
         body: opts.body,
-        sound: opts.sound ? 'adhan.wav' : undefined,
+        sound: opts.sound ? soundFileName(opts.soundId) : undefined,
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.DAILY,
@@ -132,11 +138,12 @@ async function syncPrayerNotifications(opts: SyncOptions): Promise<void> {
 export async function sendTestNotification(
   title: string,
   body: string,
-  sound: boolean
+  sound: boolean,
+  soundId: string = 'mecca'
 ): Promise<boolean> {
   // Desktop/web: show it immediately via the Web Notification API.
   if (Platform.OS === 'web') {
-    return showWebNotification(title, body, sound);
+    return showWebNotification(title, body, sound, soundId);
   }
 
   const granted = await requestNotificationPermissions();
@@ -147,7 +154,7 @@ export async function sendTestNotification(
       content: {
         title,
         body,
-        sound: sound ? 'adhan.wav' : undefined,
+        sound: sound ? soundFileName(soundId) : undefined,
       },
       trigger: {
         type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
@@ -170,7 +177,8 @@ export async function applyPrayerNotifications(
   translate: (key: any) => string,
   enabled: boolean,
   sound: boolean,
-  timings?: PrayerTimes | null
+  timings?: PrayerTimes | null,
+  soundId: string = 'mecca'
 ): Promise<void> {
   const labels: Record<string, string> = {
     Fajr: translate('fajr'),
@@ -182,6 +190,7 @@ export async function applyPrayerNotifications(
   await syncPrayerNotifications({
     enabled,
     sound,
+    soundId,
     labels,
     body: translate('prayerTimeNotifBody'),
     timings,
