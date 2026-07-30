@@ -1,10 +1,22 @@
+import {
+  isPermissionGranted,
+  requestPermission,
+  sendNotification,
+} from '@tauri-apps/plugin-notification';
+
 // Desktop/web notification path.
 //
 // expo-notifications has no web implementation (its native module is a no-op on
 // web), so on the Tauri desktop build — which runs the Expo *web* bundle inside
-// a WKWebView — none of the scheduled prayer notifications ever fire. This file
-// reimplements the same behaviour with the standard Web Notification API plus an
-// HTML5 <Audio> element for the adhan sound.
+// a WKWebView — none of the scheduled prayer notifications ever fire.
+//
+// The Tauri desktop build additionally can't rely on the browser's
+// `Notification` API: WKWebView doesn't implement it, so `'Notification' in
+// window` is false there and everything silently no-ops. Detect that case
+// (Tauri injects `window.__TAURI_INTERNALS__`) and drive the real macOS
+// notification center through the `tauri-plugin-notification` bridge instead.
+// A plain browser preview (e.g. `expo export --platform web` served outside
+// Tauri) still falls back to the standard Web Notification API.
 //
 // Two important limitations, inherent to running inside a webview rather than a
 // real OS background service:
@@ -21,11 +33,26 @@ const ADHAN_SOUND_URI: string = require('../../assets/sounds/adhan.wav');
 // Track pending prayer timers so a reschedule can cancel the previous batch.
 let scheduledTimers: ReturnType<typeof setTimeout>[] = [];
 
+function isTauri(): boolean {
+  return typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+}
+
 function hasNotificationApi(): boolean {
   return typeof window !== 'undefined' && 'Notification' in window;
 }
 
 export async function ensureWebPermission(): Promise<boolean> {
+  if (isTauri()) {
+    try {
+      let granted = await isPermissionGranted();
+      if (!granted) {
+        granted = (await requestPermission()) === 'granted';
+      }
+      return granted;
+    } catch {
+      return false;
+    }
+  }
   if (!hasNotificationApi()) return false;
   if (Notification.permission === 'granted') return true;
   if (Notification.permission === 'denied') return false;
@@ -56,8 +83,12 @@ export async function showWebNotification(
   const granted = await ensureWebPermission();
   if (!granted) return false;
   try {
-    // eslint-disable-next-line no-new
-    new Notification(title, { body });
+    if (isTauri()) {
+      sendNotification({ title, body });
+    } else {
+      // eslint-disable-next-line no-new
+      new Notification(title, { body });
+    }
     if (sound) playAdhan();
     return true;
   } catch {
@@ -86,7 +117,7 @@ export function scheduleWebPrayerNotifications(
   sound: boolean
 ): void {
   cancelWebPrayerNotifications();
-  if (!hasNotificationApi()) return;
+  if (!isTauri() && !hasNotificationApi()) return;
 
   const now = new Date();
   for (const prayer of prayers) {
