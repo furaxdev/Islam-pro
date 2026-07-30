@@ -18,6 +18,16 @@ import {
 // A plain browser preview (e.g. `expo export --platform web` served outside
 // Tauri) still falls back to the standard Web Notification API.
 //
+// The plugin's `sound` option can't carry the adhan clip on macOS: its
+// backend (notify-rust, on the legacy NSUserNotification API — the modern
+// UNUserNotificationCenter path exists but isn't the default) only accepts
+// *named system sounds* ("Glass", "Ping"...), silently playing nothing for
+// an unrecognized name like a bundled file. So the adhan is played
+// separately, through the Web Audio API (AudioContext) rather than an
+// <audio> element — HTMLMediaElement playback is what macOS picks up as a
+// Now Playing / Control Center media session; raw AudioContext buffer
+// playback isn't a "media element" and doesn't get that treatment.
+//
 // Two important limitations, inherent to running inside a webview rather than a
 // real OS background service:
 //   1. Scheduling is done with setTimeout, so notifications only fire while the
@@ -75,6 +85,36 @@ function playAdhan(): void {
   }
 }
 
+// Tauri-only path (see file header): raw AudioContext buffer playback, not
+// an <audio> element, so macOS doesn't surface it as a Now Playing session.
+let audioCtx: AudioContext | null = null;
+let adhanBufferPromise: Promise<AudioBuffer | null> | null = null;
+
+function loadAdhanBuffer(ctx: AudioContext): Promise<AudioBuffer | null> {
+  if (!adhanBufferPromise) {
+    adhanBufferPromise = fetch(ADHAN_SOUND_URI)
+      .then((res) => res.arrayBuffer())
+      .then((data) => ctx.decodeAudioData(data))
+      .catch(() => null);
+  }
+  return adhanBufferPromise;
+}
+
+async function playAdhanViaWebAudio(): Promise<void> {
+  try {
+    const ctx = audioCtx ?? (audioCtx = new AudioContext());
+    if (ctx.state === 'suspended') await ctx.resume().catch(() => {});
+    const buffer = await loadAdhanBuffer(ctx);
+    if (!buffer) return;
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start(0);
+  } catch {
+    // ignore
+  }
+}
+
 export async function showWebNotification(
   title: string,
   body: string,
@@ -84,11 +124,8 @@ export async function showWebNotification(
   if (!granted) return false;
   try {
     if (isTauri()) {
-      // The sound is attached to the native notification itself (bundled as
-      // a macOS notification sound resource) — playing it separately via
-      // <Audio> would register a distinct "Now Playing" media session in
-      // Control Center, which looks like a bug.
-      sendNotification({ title, body, sound: sound ? 'adhan.wav' : undefined });
+      sendNotification({ title, body });
+      if (sound) void playAdhanViaWebAudio();
     } else {
       // eslint-disable-next-line no-new
       new Notification(title, { body });
