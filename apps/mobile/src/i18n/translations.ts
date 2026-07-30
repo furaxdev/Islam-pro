@@ -23,6 +23,7 @@ export const translations = {
 
     // Home
     assalamuAlaikum: 'Assalamu Alaikum',
+    waAlaikumAssalam: 'Wa alaikum assalam wa rahmatullah',
     nextPrayer: 'Prochaine prière',
     inMinutes: 'dans',
     hadithOfDay: 'Hadith du jour',
@@ -176,6 +177,7 @@ export const translations = {
 
     // Home
     assalamuAlaikum: 'السلام عليكم',
+    waAlaikumAssalam: 'وعليكم السلام ورحمة الله',
     nextPrayer: 'الصلاة القادمة',
     inMinutes: 'في',
     hadithOfDay: 'حديث اليوم',
@@ -329,6 +331,7 @@ export const translations = {
 
     // Home
     assalamuAlaikum: 'Assalamu Alaikum',
+    waAlaikumAssalam: 'Wa alaikum assalam wa rahmatullah',
     nextPrayer: 'Next Prayer',
     inMinutes: 'in',
     hadithOfDay: 'Hadith of the Day',

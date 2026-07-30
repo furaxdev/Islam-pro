@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -38,6 +39,25 @@ export default function HomeScreen() {
   const [hadith, setHadith] = useState<Hadith | null>(null);
   const [upcomingEvents, setUpcomingEvents] = useState<IslamicEvent[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [greetingTaps, setGreetingTaps] = useState(0);
+  const [showReply, setShowReply] = useState(false);
+  const replyOpacity = useRef(new Animated.Value(0)).current;
+
+  // Easter egg: tap the greeting 3 times for a reply.
+  const handleGreetingTap = () => {
+    const next = greetingTaps + 1;
+    if (next < 3) {
+      setGreetingTaps(next);
+      return;
+    }
+    setGreetingTaps(0);
+    setShowReply(true);
+    Animated.sequence([
+      Animated.timing(replyOpacity, { toValue: 1, duration: 250, useNativeDriver: true }),
+      Animated.delay(1800),
+      Animated.timing(replyOpacity, { toValue: 0, duration: 400, useNativeDriver: true }),
+    ]).start(() => setShowReply(false));
+  };
 
   const bgColor = darkMode ? colors.backgroundDark : colors.backgroundLight;
   const cardBg = darkMode ? colors.cardDark : colors.cardLight;
@@ -140,9 +160,18 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={[styles.greeting, { color: colors.gold }]}>
-              {t('assalamuAlaikum')}
-            </Text>
+            <Touchable onPress={handleGreetingTap} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+              <Text style={[styles.greeting, { color: colors.gold }]}>
+                {t('assalamuAlaikum')}
+              </Text>
+            </Touchable>
+            {showReply && (
+              <Animated.Text
+                style={[styles.greetingReply, { color: textSecondary, opacity: replyOpacity }]}
+              >
+                {t('waAlaikumAssalam')}
+              </Animated.Text>
+            )}
             <Text style={[styles.time, { color: textColor }]}>
               {formatTime(currentTime)}
             </Text>
@@ -301,6 +330,11 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 24,
     fontWeight: '700',
+  },
+  greetingReply: {
+    fontSize: 13,
+    fontStyle: 'italic',
+    marginTop: 2,
   },
   time: {
     fontSize: 36,

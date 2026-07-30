@@ -84,12 +84,16 @@ export async function showWebNotification(
   if (!granted) return false;
   try {
     if (isTauri()) {
-      sendNotification({ title, body });
+      // The sound is attached to the native notification itself (bundled as
+      // a macOS notification sound resource) — playing it separately via
+      // <Audio> would register a distinct "Now Playing" media session in
+      // Control Center, which looks like a bug.
+      sendNotification({ title, body, sound: sound ? 'adhan.wav' : undefined });
     } else {
       // eslint-disable-next-line no-new
       new Notification(title, { body });
+      if (sound) playAdhan();
     }
-    if (sound) playAdhan();
     return true;
   } catch {
     return false;

@@ -36,6 +36,9 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
+    "resources": {
+      "../assets/sounds/adhan.wav": "adhan.wav"
+    },
     "android": {
       "debugApplicationIdSuffix": ".debug"
     },

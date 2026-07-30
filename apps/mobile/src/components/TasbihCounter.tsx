@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import * as Haptics from 'expo-haptics';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,6 +21,7 @@ interface TasbihCounterProps {
 export default function TasbihCounter({ dhikr, darkMode }: TasbihCounterProps) {
   const { t, language } = useApp();
   const [count, setCount] = useState(0);
+  const glowOpacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     setCount(0);
@@ -35,8 +36,18 @@ export default function TasbihCounter({ dhikr, darkMode }: TasbihCounterProps) {
   const progress = progressInCycle / dhikr.targetCount;
 
   const increment = () => {
+    const next = count + 1;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-    setCount((c) => c + 1);
+    setCount(next);
+    // Easter egg: a golden pulse at 99, a nod to the 99 Names of Allah.
+    if (next === 99) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
+      Animated.sequence([
+        Animated.timing(glowOpacity, { toValue: 0.4, duration: 300, useNativeDriver: true }),
+        Animated.delay(700),
+        Animated.timing(glowOpacity, { toValue: 0, duration: 600, useNativeDriver: true }),
+      ]).start();
+    }
   };
 
   const reset = () => {
