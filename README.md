@@ -24,7 +24,8 @@ Islam-pro/
 ├── apps/
 │   ├── mobile/       App Expo (React Native + expo-router) — iOS/Android/Web
 │   │   └── src-tauri/  Wrapper Tauri → app desktop native (.dmg/.exe)
-│   └── api/          API Hono (Node + TypeScript) + MongoDB
+│   ├── api/          API Hono (Node + TypeScript) + MongoDB
+│   └── site/         Site vitrine Next.js, déployé sur Vercel
 ├── packages/
 │   └── shared/       Types TypeScript partagés entre api et mobile
 ├── pnpm-workspace.yaml
@@ -50,14 +51,15 @@ pnpm mobile            # lance l'app Expo (puis 'w' web, 'i' iOS, 'a' Android)
 
 ## Scripts racine
 
-| Commande             | Effet                                   |
-|----------------------|-----------------------------------------|
-| `pnpm mobile`        | App Expo (Metro)                        |
-| `pnpm mobile:web`    | Expo ciblant le web                     |
-| `pnpm mobile:ios`    | Expo ciblant iOS                        |
-| `pnpm api`           | API Hono en dev (watch)                 |
-| `pnpm lint`          | ESLint sur le mobile                    |
-| `pnpm typecheck`     | Typecheck de tous les packages          |
+| Commande               | Effet                                   |
+|------------------------|-----------------------------------------|
+| `pnpm mobile`          | App Expo (Metro)                        |
+| `pnpm mobile:web`      | Expo ciblant le web                     |
+| `pnpm mobile:ios`      | Expo ciblant iOS                        |
+| `pnpm mobile:android`  | Expo ciblant Android                    |
+| `pnpm api`             | API Hono en dev (watch)                 |
+| `pnpm lint`            | ESLint sur le mobile                    |
+| `pnpm typecheck`       | Typecheck de tous les packages          |
 
 ## API (apps/api)
 
@@ -89,18 +91,42 @@ bash build-installer.sh              # CPU illimité
 CARGO_BUILD_JOBS=4 bash build-installer.sh   # limite la compilation Rust à 4 cœurs
 ```
 
+**Build sans charger le CPU local** : `.github/workflows/build-desktop.yml` compile le `.dmg`
+sur les runners macOS de GitHub Actions (déclenchement manuel) :
+
+```bash
+gh workflow run build-desktop.yml
+# une fois terminé : télécharger l'artefact, puis appliquer le style Finder en local
+gh run download <run-id> --name islam-pro-installer-dmg --dir apps/mobile/builds
+bash apps/mobile/src-tauri/finalize-dmg-style.sh "apps/mobile/builds/Islam Pro Installer.dmg"
+```
+
+Le style Finder (fond personnalisé, position des icônes) doit être appliqué en local
+car il dépend d'une session graphique (AppleScript/Finder), indisponible en CI.
+
 ## Notifications
 
-L'app peut notifier chaque prière avec le son de l'Adhan :
+L'app peut notifier chaque prière avec le son de l'Adhan, au choix parmi **4 enregistrements**
+libres de droits (Réglages → Choix de l'Adhan, avec écoute intégrale avant sélection) :
+Grande Mosquée de La Mecque, Masjid al-Haram (Maghrib), Mosquée Hassan II (Casablanca), et
+un enregistrement classique CC0. Voir `src/data/adhanSounds.ts` pour le détail des licences.
 
-- **iOS / Android** : notifications locales programmées via `expo-notifications`
-  (le son `assets/sounds/adhan.wav` est déclaré dans `app.json`).
-- **Desktop / Web** : `expo-notifications` étant inopérant hors mobile, un chemin
-  parallèle (`src/services/webNotifications.ts`) utilise l'API Web `Notification`
-  + `<Audio>`. Limite : les notifs ne se déclenchent que **quand l'app est ouverte**
-  (pas de service en arrière-plan dans le webview).
+- **iOS / Android** : notifications locales programmées via `expo-notifications`. Chaque
+  Adhan a un court clip WAV (~15 s, format imposé par iOS pour un son de notif personnalisé)
+  déclaré dans `app.json`.
+- **Desktop (Tauri)** : `expo-notifications` étant inopérant dans la WebView (WKWebView
+  n'implémente pas l'API `Notification` du navigateur), les notifs passent par
+  `tauri-plugin-notification` (vraies notifications macOS natives). Le son est joué
+  séparément via l'API Web Audio (`AudioContext`, pas un `<audio>`) pour éviter qu'il
+  s'enregistre comme session média dans le Centre de contrôle. Limite : les notifs
+  programmées ne se déclenchent que **quand l'app est ouverte** (pas de service en
+  arrière-plan dans la WebView).
+- **Debug desktop** : dans l'onglet Prière, taper sur une prière déclenche sa notification
+  immédiatement (aucun moyen d'avancer l'horloge pour tester le déclenchement réel).
 
-Un bouton **« Notification de test »** est disponible dans les réglages.
+Un bouton **« Notification de test »** est disponible dans les réglages. Chaque Adhan a
+aussi une version longue compressée (AAC/M4A) utilisée uniquement pour l'écoute intégrale
+dans le sélecteur, jamais pour la notif elle-même.
 
 ## Déploiement
 
@@ -116,8 +142,12 @@ l'API a besoin de `MONGO_URL` / `DB_NAME`.
 
 ## Crédits
 
-- Son de l'Adhan : enregistrement à la Grande Mosquée de La Mecque par Seyfula Islam,
-  Wikimedia Commons, sous licence **CC BY 3.0**.
+Les 4 sons de l'Adhan (Réglages → Choix de l'Adhan), tous vérifiés sur Wikimedia Commons :
+
+- Grande Mosquée de La Mecque — Seyfula Islam, **CC BY 3.0**.
+- Masjid al-Haram (Maghrib) — 3omar Faruq, **CC BY 3.0**.
+- Mosquée Hassan II, Casablanca — Fraguando, **CC BY-SA 4.0**.
+- Adhan classique — Adam-synagda, **CC0**.
 
 ## License
 
@@ -125,5 +155,5 @@ l'API a besoin de `MONGO_URL` / `DB_NAME`.
 
 Usage, modification et redistribution libres à des fins **non commerciales**
 (personnel, éducatif, associatif, religieux…). Toute exploitation commerciale
-nécessite une autorisation. Le son de l'Adhan conserve sa propre licence
-CC BY-SA 4.0 (voir Crédits).
+nécessite une autorisation. Les sons de l'Adhan conservent chacun leur propre
+licence (voir Crédits).

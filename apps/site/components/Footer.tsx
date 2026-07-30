@@ -35,7 +35,13 @@ export default function Footer() {
             © 2026 <strong>furaxdev</strong> — PolyForm Noncommercial License 1.0.0
           </span>
           <span>
-            Son de l&apos;Adhan : Grande Mosquée de La Mecque, Seyfula Islam, Wikimedia Commons, CC BY 3.0
+            4 sons d&apos;Adhan au choix, tous CC — voir{' '}
+            <a
+              href="https://github.com/furaxdev/Islam-pro/blob/main/README.md#crédits"
+              style={{ color: 'inherit' }}
+            >
+              les crédits
+            </a>
           </span>
         </div>
       </div>
