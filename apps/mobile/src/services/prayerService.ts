@@ -29,28 +29,6 @@ export async function getPrayerTimesByCoords(
   };
 }
 
-export async function getPrayerTimesByCity(
-  city: string,
-  country: string,
-  date?: Date
-): Promise<{ timings: PrayerTimes; hijri: HijriDate }> {
-  const d = date || new Date();
-  const dateStr = `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`;
-  
-  const response = await axios.get(`${ALADHAN_API}/timingsByCity/${dateStr}`, {
-    params: {
-      city,
-      country,
-      method: 2,
-    },
-  });
-  
-  return {
-    timings: response.data.data.timings,
-    hijri: response.data.data.date.hijri,
-  };
-}
-
 export function getNextPrayer(timings: PrayerTimes): { name: string; time: string; minutesLeft: number } {
   const now = new Date();
   const currentMinutes = now.getHours() * 60 + now.getMinutes();

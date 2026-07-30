@@ -16,7 +16,6 @@ import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import {
   getPrayerTimesByCoords,
-  getPrayerTimesByCity,
   getNextPrayer,
   PrayerTimes,
   HijriDate,
@@ -144,7 +143,20 @@ export default function PrayerScreen() {
       setShowCityModal(false);
       setSelectedCity(`${city}, ${country}`);
 
-      const data = await getPrayerTimesByCity(city, country);
+      // Geocode to precise coordinates and use the same coords-based lookup
+      // as GPS, instead of Aladhan's own by-city resolution — that endpoint
+      // can land on a different point within the city than the actual
+      // coordinates would, producing times that don't match GPS for the
+      // same place.
+      const geo = await geocodePlaceName(`${city}, ${country}`);
+      if (!geo) throw new Error('City geocoding failed');
+      setLocation(geo);
+
+      const data = await withTimeout(
+        getPrayerTimesByCoords(geo.latitude, geo.longitude),
+        8000,
+        'Prayer times request timed out'
+      );
       setPrayerTimes(data.timings);
       setHijriDate(data.hijri);
       persistAndSchedule(data.timings);
