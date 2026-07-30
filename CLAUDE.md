@@ -16,12 +16,9 @@ This is a **pnpm workspace monorepo** (`pnpm-workspace.yaml`, root `.npmrc` sets
 
 Run from the repo root (pnpm). `corepack enable` first if pnpm is missing.
 
-- `pnpm install` — install the whole workspace.
 - `pnpm mobile` — start the Expo Metro dev server (then `w`/`i`/`a` for web/iOS/Android).
-- `pnpm mobile:web` / `pnpm mobile:ios` / `pnpm mobile:android` — target a platform.
 - `pnpm api` — run the Hono API in watch mode (`apps/api`, needs `apps/api/.env` with `MONGO_URL` / `DB_NAME`; Mongo is optional — `/api/health` works without it).
 - `pnpm lint` — `expo lint` on the mobile app.
-- `pnpm typecheck` — typecheck every package (`pnpm -r typecheck`).
 - Desktop: `cd apps/mobile && pnpm desktop:build` (needs Rust + Tauri CLI).
 - Marketing site: `cd apps/site && pnpm dev` (or `pnpm build && pnpm start`).
 - No test script is currently defined.
