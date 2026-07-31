@@ -10,7 +10,7 @@ import {
 
 /** expo-notifications takes a bundled sound by filename (as declared in app.json). */
 function soundFileName(adhanSoundId: string): string {
-  return `adhan-${adhanSoundId}.wav`;
+  return `adhan_${adhanSoundId}.wav`;
 }
 
 const STORAGE_KEY = 'lastPrayerTimings';
