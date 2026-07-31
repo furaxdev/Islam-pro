@@ -8,7 +8,7 @@ API Hono (TypeScript), et types partagés.
 
 ## Télécharger
 
-- <a href="https://expo.dev/artifacts/eas/KQkugG_9gpYqHa4eezroNTPbc32vTxOCEQYr1qeQc5Q.apk"><img src="https://cdn.simpleicons.org/android/3DDC84" width="18" height="18" alt="Android" valign="middle"></a> **Android (APK)** : [télécharger la dernière version](https://expo.dev/artifacts/eas/KQkugG_9gpYqHa4eezroNTPbc32vTxOCEQYr1qeQc5Q.apk)
+- <a href="https://expo.dev/artifacts/eas/4mhBdkvnrnQRGsIC313vpe0XXc2rkuhHQW0vhx_y02E.apk"><img src="https://cdn.simpleicons.org/android/3DDC84" width="18" height="18" alt="Android" valign="middle"></a> **Android (APK)** : [télécharger la dernière version](https://expo.dev/artifacts/eas/4mhBdkvnrnQRGsIC313vpe0XXc2rkuhHQW0vhx_y02E.apk)
   — ouvre ce lien depuis le téléphone, installe l'APK (autorise « sources inconnues » si demandé).
 - <a href="#app-desktop-tauri"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="macOS" valign="middle"></a> **macOS** : voir [App Desktop (Tauri)](#app-desktop-tauri) pour générer le `.dmg`.
 - <a href="#déploiement"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="iOS" valign="middle"></a> **iOS** : build EAS à venir (nécessite un compte Apple Developer).
