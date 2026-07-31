@@ -118,6 +118,10 @@ export default function QuranScreen() {
           renderItem={renderSurah}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={7}
+          removeClippedSubviews
         />
       )}
     </SafeAreaView>

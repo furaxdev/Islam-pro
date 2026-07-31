@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import Reanimated, { FadeIn } from 'react-native-reanimated';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
 import {
@@ -291,7 +292,11 @@ export default function PrayerScreen() {
       {loading ? (
         <LoadingSplash darkMode={darkMode} label={t('loading')} />
       ) : (
-        <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+        <Reanimated.ScrollView
+          entering={FadeIn.duration(350)}
+          style={styles.scrollView}
+          showsVerticalScrollIndicator={false}
+        >
           {/* Prayer Times List */}
           <View style={styles.prayerList}>
             {prayersList.map((prayer, index) => {
@@ -329,7 +334,7 @@ export default function PrayerScreen() {
               );
             })}
           </View>
-        </ScrollView>
+        </Reanimated.ScrollView>
       )}
 
       {/* City Selection Modal */}
@@ -377,6 +382,10 @@ export default function PrayerScreen() {
               data={filteredCities}
               keyExtractor={(item) => `${item.city}-${item.country}`}
               keyboardShouldPersistTaps="handled"
+              initialNumToRender={12}
+              maxToRenderPerBatch={12}
+              windowSize={7}
+              removeClippedSubviews
               renderItem={({ item }) => (
                 <Touchable
                   style={[styles.cityItem, { borderBottomColor: bgColor }]}

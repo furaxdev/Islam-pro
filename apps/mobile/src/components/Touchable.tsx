@@ -4,6 +4,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
+  withSpring,
+  Easing,
 } from 'react-native-reanimated';
 import { Pressable, PressableProps } from 'react-native';
 
@@ -23,11 +25,14 @@ export default function Touchable({ style, children, onPress, ...rest }: Touchab
   }));
 
   const handlePressIn = () => {
-    scale.value = withTiming(0.96, { duration: 100 });
+    // Quick, decisive shrink on press — no bounce, just a snappy response.
+    scale.value = withTiming(0.96, { duration: 90, easing: Easing.out(Easing.quad) });
   };
 
   const handlePressOut = () => {
-    scale.value = withTiming(1, { duration: 150 });
+    // Gentle spring back on release for a natural, premium settle instead
+    // of a linear snap to 1.
+    scale.value = withSpring(1, { damping: 14, stiffness: 220, mass: 0.5 });
   };
 
   const resolvedStyle = ({ pressed }: { pressed: boolean }) => [

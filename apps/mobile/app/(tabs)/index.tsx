@@ -9,6 +9,7 @@ import {
   Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Reanimated, { FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
@@ -149,6 +150,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
+      <Reanimated.View style={{ flex: 1 }} entering={FadeIn.duration(350)}>
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
@@ -297,6 +299,7 @@ export default function HomeScreen() {
           </View>
         )}
       </ScrollView>
+      </Reanimated.View>
     </SafeAreaView>
   );
 }

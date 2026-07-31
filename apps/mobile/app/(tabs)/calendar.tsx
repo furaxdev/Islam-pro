@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import Reanimated, { FadeIn } from 'react-native-reanimated';
 import { useRouter } from 'expo-router';
 import { useApp } from '../../src/context/AppContext';
 import { colors, spacing, borderRadius, shadows } from '../../src/constants/theme';
@@ -230,6 +231,7 @@ export default function CalendarScreen() {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: bgColor }]} edges={['top']}>
+      <Reanimated.View style={{ flex: 1 }} entering={FadeIn.duration(350)}>
       <ScrollView
         ref={scrollRef}
         style={styles.scrollView}
@@ -376,6 +378,7 @@ export default function CalendarScreen() {
 
         <View style={{ height: spacing.xxl }} />
       </ScrollView>
+      </Reanimated.View>
     </SafeAreaView>
   );
 }
