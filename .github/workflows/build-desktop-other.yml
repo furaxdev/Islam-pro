@@ -80,6 +80,12 @@ jobs:
           path: apps/mobile/src-tauri/target/release/bundle/deb/*.deb
           retention-days: 30
 
+      - name: Locate the .deb
+        id: deb
+        run: |
+          path=$(find apps/mobile/src-tauri/target/release/bundle/deb -maxdepth 1 -name '*.deb')
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+
       - name: Publish to Cloudsmith APT repo
         uses: cloudsmith-io/action@v0.6.7
         with:
@@ -91,4 +97,4 @@ jobs:
           distro: ubuntu
           release: jammy
           republish: true
-          file: apps/mobile/src-tauri/target/release/bundle/deb/*.deb
+          file: ${{ steps.deb.outputs.path }}
