@@ -55,7 +55,12 @@ export default function Download() {
           </Reveal>
           <Reveal delay={160}>
             <div className="download-card">
-              <img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/microsoft/default.svg" alt="" />
+              <svg viewBox="0 0 256 256" width="30" height="30" aria-hidden="true">
+                <path fill="#F1511B" d="M121.666 121.666H0V0h121.666z" />
+                <path fill="#80CC28" d="M256 121.666H134.335V0H256z" />
+                <path fill="#00ADEF" d="M121.663 256.002H0V134.336h121.663z" />
+                <path fill="#FBBC09" d="M256 256.002H134.335V134.336H256z" />
+              </svg>
               <h3>Windows</h3>
               <p>Installeur .exe (NSIS), non signé Microsoft.</p>
               <a className="btn btn-gold" href={EXE_URL}>
@@ -69,7 +74,17 @@ export default function Download() {
           </Reveal>
           <Reveal delay={240}>
             <div className="download-card">
-              <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" />
+              <svg viewBox="0 0 100 100" width="30" height="30" aria-hidden="true">
+                <circle cx="50" cy="50" r="45" fill="#f47421" />
+                <circle cx="50" cy="50" r="21.8" fill="none" stroke="#fff" strokeWidth="8.6" />
+                <g id="a">
+                  <circle cx="19.4" cy="50" r="8.4" fill="#f47421" />
+                  <path stroke="#f47421" strokeWidth="3.2" d="M67 50h10" />
+                  <circle cx="19.4" cy="50" r="6" fill="#fff" />
+                </g>
+                <use xlinkHref="#a" transform="rotate(120 50 50)" />
+                <use xlinkHref="#a" transform="rotate(240 50 50)" />
+              </svg>
               <h3>Linux</h3>
               <p>Dépôt APT pour Ubuntu / Debian, mis à jour automatiquement.</p>
               <CopyCommand command="curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash" />
