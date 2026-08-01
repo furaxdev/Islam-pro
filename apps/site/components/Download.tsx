@@ -2,6 +2,8 @@ import Reveal from './Reveal';
 
 const APK_URL =
   'https://expo.dev/artifacts/eas/KQkugG_9gpYqHa4eezroNTPbc32vTxOCEQYr1qeQc5Q.apk';
+const DMG_URL =
+  'https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg';
 
 export default function Download() {
   return (
@@ -31,13 +33,18 @@ export default function Download() {
             <div className="download-card">
               <img src="https://cdn.simpleicons.org/apple/D4AF37" alt="" />
               <h3>macOS</h3>
-              <p>Génère l&apos;installeur .dmg localement avec Tauri :</p>
-              <code>pnpm desktop:build</code>
+              <p>Installeur .dmg prêt à l&apos;emploi, non signé Apple.</p>
+              <a className="btn btn-gold" href={DMG_URL}>
+                Télécharger le .dmg
+              </a>
+              <p className="download-hint">
+                macOS bloque l&apos;app au 1er lancement (non signée) : clic droit → Ouvrir.
+              </p>
               <a
                 className="btn btn-ghost"
                 href="https://github.com/furaxdev/Islam-pro/tree/main/apps/mobile/src-tauri"
               >
-                Voir la procédure
+                Ou builder soi-même
               </a>
             </div>
           </Reveal>

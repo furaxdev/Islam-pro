@@ -623,6 +623,12 @@ button {
 .download-card .btn {
   align-self: flex-start;
 }
+.download-hint {
+  flex-grow: 0 !important;
+  font-size: 0.78rem !important;
+  color: var(--ink-dim);
+  opacity: 0.75;
+}
 .tag {
   font-family: var(--font-mono);
   font-size: 0.7rem;
