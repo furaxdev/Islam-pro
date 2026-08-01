@@ -30,7 +30,7 @@ Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
 > reconstruis avec `eas build --platform android --profile preview` (depuis
 > `apps/mobile/`) pour en régénérer un.
 
-## Structure (monorepo pnpm)
+## Structure du projet
 
 ```
 Islam-pro/
