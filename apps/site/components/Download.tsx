@@ -4,6 +4,10 @@ const APK_URL =
   'https://expo.dev/artifacts/eas/KQkugG_9gpYqHa4eezroNTPbc32vTxOCEQYr1qeQc5Q.apk';
 const DMG_URL =
   'https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg';
+const EXE_URL =
+  'https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe';
+const DEB_URL =
+  'https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb';
 
 export default function Download() {
   return (
@@ -12,7 +16,7 @@ export default function Download() {
         <div className="section-head">
           <Reveal>
             <span className="eyebrow">Télécharger</span>
-            <h2 className="section-heading">Sur votre téléphone ou votre Mac</h2>
+            <h2 className="section-heading">Sur votre téléphone ou votre ordinateur</h2>
             <p className="section-lede">
               Le code est le même partout — seule la manière de l&apos;installer change.
             </p>
@@ -49,6 +53,33 @@ export default function Download() {
             </div>
           </Reveal>
           <Reveal delay={160}>
+            <div className="download-card">
+              <img src="https://cdn.simpleicons.org/windows11/0078D4" alt="" />
+              <h3>Windows</h3>
+              <p>Installeur .exe (NSIS), non signé Microsoft.</p>
+              <a className="btn btn-gold" href={EXE_URL}>
+                Télécharger le .exe
+              </a>
+              <p className="download-hint">
+                Windows Defender peut avertir (app non signée) : Informations
+                complémentaires → Exécuter quand même.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={240}>
+            <div className="download-card">
+              <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" />
+              <h3>Linux</h3>
+              <p>Paquet .deb pour Ubuntu / Debian.</p>
+              <a className="btn btn-gold" href={DEB_URL}>
+                Télécharger le .deb
+              </a>
+              <p className="download-hint">
+                Installation : <code>sudo apt install ./islam-pro.deb</code>
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={320}>
             <div className="download-card">
               <span className="tag">Bientôt</span>
               <img src="https://cdn.simpleicons.org/apple/D4AF37" alt="" />
