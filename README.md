@@ -10,7 +10,9 @@ API Hono (TypeScript), et types partagés.
 
 - <a href="https://expo.dev/artifacts/eas/4mhBdkvnrnQRGsIC313vpe0XXc2rkuhHQW0vhx_y02E.apk"><img src="https://cdn.simpleicons.org/android/3DDC84" width="18" height="18" alt="Android" valign="middle"></a> **Android (APK)** : [télécharger la dernière version](https://expo.dev/artifacts/eas/4mhBdkvnrnQRGsIC313vpe0XXc2rkuhHQW0vhx_y02E.apk)
   — ouvre ce lien depuis le téléphone, installe l'APK (autorise « sources inconnues » si demandé).
-- <a href="#app-desktop-tauri"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="macOS" valign="middle"></a> **macOS** : voir [App Desktop (Tauri)](#app-desktop-tauri) pour générer le `.dmg`.
+- <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="macOS" valign="middle"></a> **macOS (.dmg)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg)
+  — app non signée Apple : au premier lancement, **clic droit sur l'app → Ouvrir → Ouvrir**
+  (voir [App Desktop (Tauri)](#app-desktop-tauri) pour le générer soi-même).
 - <a href="#déploiement"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="iOS" valign="middle"></a> **iOS** : build EAS à venir (nécessite un compte Apple Developer).
 
 > Le lien de l'APK provient d'EAS Build et peut expirer au bout de ~30 jours ;
@@ -132,7 +134,10 @@ dans le sélecteur, jamais pour la notif elle-même.
 
 - **Render est abandonné** — l'app n'est plus distribuée comme site hébergé.
 - **Mobile** : builds EAS (le `projectId` EAS est dans `apps/mobile/app.json`).
-- **Desktop** : `.dmg` (macOS) / `.exe` (Windows) distribués hors store.
+- **Desktop** : `.dmg` (macOS) / `.exe` (Windows) distribués hors store. Le `.dmg` macOS
+  est publié comme asset de la [GitHub Release `desktop-latest`](https://github.com/furaxdev/Islam-pro/releases/tag/desktop-latest)
+  (mise à jour via `gh release upload desktop-latest <fichier> --clobber`) et lié
+  depuis le site vitrine et ce README.
 
 ## Note
 
