@@ -32,7 +32,7 @@ export default function Footer() {
         </div>
         <div className="footer-bottom">
           <span>
-            © 2026 <strong>furaxdev</strong> — PolyForm Noncommercial License 1.0.0
+            © 2026 <strong><a href="https://furax-dev.onrender.com">FuraxDev</a></strong> — PolyForm Noncommercial License 1.0.0
           </span>
           <span>
             4 sons d&apos;Adhan au choix, tous CC — voir{' '}
