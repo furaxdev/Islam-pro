@@ -1,0 +1,27 @@
+name: Test install.sh (Linux)
+
+# Manual only — runs the public install.sh one-liner inside a clean Ubuntu
+# container on GitHub's runners, to verify it actually adds the Cloudsmith
+# repo and installs islam-pro without needing a real Linux machine.
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:22.04
+    steps:
+      - name: Install curl (minimal base image doesn't have it)
+        run: |
+          apt-get update
+          apt-get install -y curl sudo
+
+      - name: Run the public install.sh
+        run: curl -fsSL https://islam-pro.vercel.app/install.sh | bash
+
+      - name: Verify islam-pro is installed
+        run: |
+          dpkg -l | grep islam-pro
+          which islam-pro || echo "no islam-pro binary on PATH (check dpkg -L islam-pro)"
+          dpkg -L islam-pro
