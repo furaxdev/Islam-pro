@@ -72,7 +72,7 @@ export default function Download() {
               <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" />
               <h3>Linux</h3>
               <p>Dépôt APT pour Ubuntu / Debian, mis à jour automatiquement.</p>
-              <CopyCommand command="curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash" />
+              <CopyCommand command="curl -fsSL https://site-iota-eight-54.vercel.app/install.sh | sudo -E bash" />
               <a className="btn btn-ghost" href={DEB_URL}>
                 Ou télécharger le .deb
               </a>

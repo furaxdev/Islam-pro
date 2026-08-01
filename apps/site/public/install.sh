@@ -1,6 +1,6 @@
 #!/bin/sh
 # Islam Pro — installer for Ubuntu/Debian.
-# Usage: curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash
+# Usage: curl -fsSL https://site-iota-eight-54.vercel.app/install.sh | sudo -E bash
 set -eu
 
 if ! command -v apt-get >/dev/null 2>&1; then
@@ -11,7 +11,7 @@ fi
 
 if [ "$(id -u)" -ne 0 ]; then
   echo "This script needs root to configure APT. Re-run as:" >&2
-  echo "  curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash" >&2
+  echo "  curl -fsSL https://site-iota-eight-54.vercel.app/install.sh | sudo -E bash" >&2
   exit 1
 fi
 

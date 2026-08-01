@@ -17,7 +17,7 @@ API Hono (TypeScript), et types partagés.
   — app non signée Microsoft : si SmartScreen avertit, **Informations complémentaires → Exécuter quand même**.
 - <a href="https://dl.cloudsmith.io/public/furax-dev/islam-pro/deb/ubuntu/jammy/"><img src="https://cdn.simpleicons.org/linux/FCC624" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (Ubuntu/Debian)** : une seule commande (ajoute le dépôt APT + installe) :
   ```bash
-  curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash
+  curl -fsSL https://site-iota-eight-54.vercel.app/install.sh | sudo -E bash
   ```
   Mises à jour ensuite via `sudo apt update && sudo apt upgrade`. Ou juste le fichier
   `.deb` : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
