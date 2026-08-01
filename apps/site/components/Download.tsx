@@ -55,7 +55,7 @@ export default function Download() {
           </Reveal>
           <Reveal delay={160}>
             <div className="download-card">
-              <span className="download-card-emoji" aria-hidden="true">🪟</span>
+              <img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/microsoft/default.svg" alt="" />
               <h3>Windows</h3>
               <p>Installeur .exe (NSIS), non signé Microsoft.</p>
               <a className="btn btn-gold" href={EXE_URL}>

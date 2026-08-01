@@ -15,7 +15,7 @@ Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
 - <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="macOS" valign="middle"></a> **macOS (.dmg)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg)
   — app non signée Apple : au premier lancement, **clic droit sur l'app → Ouvrir → Ouvrir**
   (voir [App Desktop (Tauri)](#app-desktop-tauri) pour le générer soi-même).
-- 🪟 **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
+- <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/microsoft/default.svg" width="18" height="18" alt="Windows" valign="middle"></a> **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
   — app non signée Microsoft : si SmartScreen avertit, **Informations complémentaires → Exécuter quand même**.
 - <a href="https://dl.cloudsmith.io/public/furax-dev/islam-pro/deb/ubuntu/jammy/"><img src="https://cdn.simpleicons.org/linux/888888" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (Ubuntu/Debian)** : une seule commande (ajoute le dépôt APT + installe) :
   ```bash
