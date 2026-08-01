@@ -70,13 +70,18 @@ export default function Download() {
             <div className="download-card">
               <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" />
               <h3>Linux</h3>
-              <p>Paquet .deb pour Ubuntu / Debian.</p>
-              <a className="btn btn-gold" href={DEB_URL}>
-                Télécharger le .deb
-              </a>
+              <p>Dépôt APT pour Ubuntu / Debian, mis à jour automatiquement.</p>
               <p className="download-hint">
-                Installation : <code>sudo apt install ./islam-pro.deb</code>
+                <code>
+                  curl -1sLf &apos;https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh&apos;
+                  | sudo -E bash
+                </code>
+                <br />
+                <code>sudo apt install islam-pro</code>
               </p>
+              <a className="btn btn-gold" href={DEB_URL}>
+                Ou télécharger le .deb
+              </a>
             </div>
           </Reveal>
           <Reveal delay={320}>

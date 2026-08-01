@@ -15,8 +15,13 @@ API Hono (TypeScript), et types partagés.
   (voir [App Desktop (Tauri)](#app-desktop-tauri) pour le générer soi-même).
 - <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe"><img src="https://cdn.simpleicons.org/windows11/0078D4" width="18" height="18" alt="Windows" valign="middle"></a> **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
   — app non signée Microsoft : si SmartScreen avertit, **Informations complémentaires → Exécuter quand même**.
-- <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb"><img src="https://cdn.simpleicons.org/linux/FCC624" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (.deb)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
-  — installe avec `sudo apt install ./islam-pro.deb` (Ubuntu/Debian).
+- <a href="https://dl.cloudsmith.io/public/furax-dev/islam-pro/deb/ubuntu/jammy/"><img src="https://cdn.simpleicons.org/linux/FCC624" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (Ubuntu/Debian)** : dépôt APT hébergé sur Cloudsmith, mis à jour à chaque build :
+  ```bash
+  curl -1sLf 'https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh' | sudo -E bash
+  sudo apt install islam-pro
+  ```
+  Ou juste le fichier `.deb` : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
+  (`sudo apt install ./islam-pro.deb`).
 - <a href="#déploiement"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="iOS" valign="middle"></a> **iOS** : build EAS à venir (nécessite un compte Apple Developer).
 
 > Le lien de l'APK provient d'EAS Build et peut expirer au bout de ~30 jours ;
@@ -143,7 +148,10 @@ dans le sélecteur, jamais pour la notif elle-même.
   (`gh workflow run build-desktop-other.yml`). Les trois sont publiés comme assets de la
   [GitHub Release `desktop-latest`](https://github.com/furaxdev/Islam-pro/releases/tag/desktop-latest)
   (mise à jour via `gh release upload desktop-latest <fichier> --clobber`) et liés
-  depuis le site vitrine et ce README.
+  depuis le site vitrine et ce README. Le `.deb` est en plus publié automatiquement
+  sur un [dépôt APT Cloudsmith](https://cloudsmith.io/~furax-dev/repos/islam-pro/)
+  (repo `furax-dev/islam-pro`, dernière étape du job `linux` dans
+  `build-desktop-other.yml`, clé API dans le secret GitHub `CLOUDSMITH_API_KEY`).
 
 ## Note
 

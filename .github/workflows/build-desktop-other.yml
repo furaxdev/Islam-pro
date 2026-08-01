@@ -79,3 +79,16 @@ jobs:
           name: islam-pro-installer-deb
           path: apps/mobile/src-tauri/target/release/bundle/deb/*.deb
           retention-days: 30
+
+      - name: Publish to Cloudsmith APT repo
+        uses: cloudsmith-io/action@v0.6.7
+        with:
+          api-key: ${{ secrets.CLOUDSMITH_API_KEY }}
+          command: push
+          format: deb
+          owner: furax-dev
+          repo: islam-pro
+          distro: ubuntu
+          release: jammy
+          republish: true
+          file: apps/mobile/src-tauri/target/release/bundle/deb/*.deb
