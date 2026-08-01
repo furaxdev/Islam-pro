@@ -18,7 +18,7 @@ jobs:
           apt-get install -y curl sudo
 
       - name: Run the public install.sh
-        run: curl -fsSL https://site-iota-eight-54.vercel.app/install.sh | bash
+        run: curl -fsSL https://islam-pro.vercel.app/install.sh | bash
 
       - name: Verify islam-pro is installed
         run: |
