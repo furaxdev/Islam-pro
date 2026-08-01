@@ -6,6 +6,8 @@ Application islamique complète (horaires de prière, Coran, Qibla, Dhikr, calen
 hijri, hadiths, douas…). Monorepo **pnpm** : app Expo (iOS / Android / Web / Desktop),
 API Hono (TypeScript), et types partagés.
 
+Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
+
 ## Télécharger
 
 - <a href="https://expo.dev/artifacts/eas/4mhBdkvnrnQRGsIC313vpe0XXc2rkuhHQW0vhx_y02E.apk"><img src="https://cdn.simpleicons.org/android/3DDC84" width="18" height="18" alt="Android" valign="middle"></a> **Android (APK)** : [télécharger la dernière version](https://expo.dev/artifacts/eas/4mhBdkvnrnQRGsIC313vpe0XXc2rkuhHQW0vhx_y02E.apk)
