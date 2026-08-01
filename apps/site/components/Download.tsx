@@ -102,7 +102,7 @@ export default function Download() {
                 <p>Dépôt APT pour Ubuntu / Debian, mis à jour automatiquement.</p>
               </div>
               <div className="download-card-actions">
-                <CopyCommand command="curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash" />
+                <CopyCommand command="curl -fsSL https://islam-pro.vercel.app/install | sudo -E bash" />
                 <a className="btn btn-ghost" href={DEB_URL}>
                   Ou télécharger le .deb
                 </a>
