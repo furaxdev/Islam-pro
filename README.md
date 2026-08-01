@@ -3,7 +3,7 @@
 ![Islam Pro](apps/mobile/store-assets/play-feature-graphic-1024x500.png)
 
 Application islamique complète (horaires de prière, Coran, Qibla, Dhikr, calendrier
-hijri, hadiths, douas…). Monorepo **pnpm** : app Expo (iOS / Android / Web / Desktop),
+hijri, hadiths, douas…). **Islam Pro Workspace** (pnpm) : app Expo (iOS / Android / Web / Desktop),
 API Hono (TypeScript), et types partagés.
 
 Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
