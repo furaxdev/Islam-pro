@@ -82,9 +82,15 @@ jobs:
 
       - name: Locate the .deb
         id: deb
+        # cloudsmith-io/action's entrypoint.sh passes -F ${{ inputs.file }}
+        # unquoted, so a filename with a space (Tauri's default "Islam
+        # Pro_1.0.0_amd64.deb") breaks its getopts parsing. Rename to a
+        # space-free path first.
         run: |
-          path=$(find apps/mobile/src-tauri/target/release/bundle/deb -maxdepth 1 -name '*.deb')
-          echo "path=$path" >> "$GITHUB_OUTPUT"
+          src=$(find apps/mobile/src-tauri/target/release/bundle/deb -maxdepth 1 -name '*.deb')
+          dest="apps/mobile/src-tauri/target/release/bundle/deb/islam-pro_1.0.0_amd64.deb"
+          mv "$src" "$dest"
+          echo "path=$dest" >> "$GITHUB_OUTPUT"
 
       - name: Publish to Cloudsmith APT repo
         uses: cloudsmith-io/action@v0.6.7
