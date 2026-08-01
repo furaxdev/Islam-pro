@@ -15,12 +15,12 @@ API Hono (TypeScript), et types partagés.
   (voir [App Desktop (Tauri)](#app-desktop-tauri) pour le générer soi-même).
 - <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe"><img src="https://cdn.simpleicons.org/windows11/0078D4" width="18" height="18" alt="Windows" valign="middle"></a> **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
   — app non signée Microsoft : si SmartScreen avertit, **Informations complémentaires → Exécuter quand même**.
-- <a href="https://dl.cloudsmith.io/public/furax-dev/islam-pro/deb/ubuntu/jammy/"><img src="https://cdn.simpleicons.org/linux/FCC624" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (Ubuntu/Debian)** : dépôt APT hébergé sur Cloudsmith, mis à jour à chaque build :
+- <a href="https://dl.cloudsmith.io/public/furax-dev/islam-pro/deb/ubuntu/jammy/"><img src="https://cdn.simpleicons.org/linux/FCC624" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (Ubuntu/Debian)** : une seule commande (ajoute le dépôt APT + installe) :
   ```bash
-  curl -1sLf 'https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh' | sudo -E bash
-  sudo apt install islam-pro
+  curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash
   ```
-  Ou juste le fichier `.deb` : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
+  Mises à jour ensuite via `sudo apt update && sudo apt upgrade`. Ou juste le fichier
+  `.deb` : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
   (`sudo apt install ./islam-pro.deb`).
 - <a href="#déploiement"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="iOS" valign="middle"></a> **iOS** : build EAS à venir (nécessite un compte Apple Developer).
 

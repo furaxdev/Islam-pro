@@ -1,4 +1,5 @@
 import Reveal from './Reveal';
+import CopyCommand from './CopyCommand';
 
 const APK_URL =
   'https://expo.dev/artifacts/eas/KQkugG_9gpYqHa4eezroNTPbc32vTxOCEQYr1qeQc5Q.apk';
@@ -71,15 +72,8 @@ export default function Download() {
               <img src="https://cdn.simpleicons.org/linux/FCC624" alt="" />
               <h3>Linux</h3>
               <p>Dépôt APT pour Ubuntu / Debian, mis à jour automatiquement.</p>
-              <p className="download-hint">
-                <code>
-                  curl -1sLf &apos;https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh&apos;
-                  | sudo -E bash
-                </code>
-                <br />
-                <code>sudo apt install islam-pro</code>
-              </p>
-              <a className="btn btn-gold" href={DEB_URL}>
+              <CopyCommand command="curl -fsSL https://islam-pro.vercel.app/install.sh | sudo -E bash" />
+              <a className="btn btn-ghost" href={DEB_URL}>
                 Ou télécharger le .deb
               </a>
             </div>
