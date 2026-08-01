@@ -55,7 +55,7 @@ export default function Download() {
           </Reveal>
           <Reveal delay={160}>
             <div className="download-card">
-              <img src="https://cdn.simpleicons.org/windows11/0078D4" alt="" />
+              <span className="download-card-emoji" aria-hidden="true">🪟</span>
               <h3>Windows</h3>
               <p>Installeur .exe (NSIS), non signé Microsoft.</p>
               <a className="btn btn-gold" href={EXE_URL}>
