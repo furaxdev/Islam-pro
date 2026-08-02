@@ -114,7 +114,7 @@ export default function Download() {
               <span className="tag">Bientôt</span>
               <img src="https://cdn.simpleicons.org/apple/D4AF37" alt="" />
               <h3>iOS</h3>
-              <p>Le build App Store est en préparation — revenez bientôt.</p>
+              <p>Le build App Store est en préparation - revenez bientôt.</p>
             </div>
           </Reveal>
         </div>

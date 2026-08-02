@@ -1,5 +1,5 @@
 /**
- * © FuraxDev — github.com/furaxdev/Islam-pro
+ * © FuraxDev, github.com/furaxdev/Islam-pro
  * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
  */
 import Header from '@/components/Header';
@@ -37,7 +37,7 @@ export default function Home() {
             {
               mark: '♪',
               title: 'Adhan à l’heure dite',
-              desc: 'Notification locale au son de l’appel à la prière — sur mobile comme sur desktop.',
+              desc: 'Notification locale au son de l’appel à la prière, sur mobile comme sur desktop.',
             },
           ]}
         />
@@ -59,7 +59,7 @@ export default function Home() {
             {
               mark: '٩٩',
               title: "Les 99 Noms d'Allah",
-              desc: 'Nom, sens et description — pour la mémorisation comme pour la réflexion.',
+              desc: 'Nom, sens et description, pour la mémorisation comme pour la réflexion.',
             },
             {
               mark: '🎧',
@@ -80,7 +80,7 @@ export default function Home() {
             {
               mark: '33',
               title: 'Dhikr & Tasbih',
-              desc: "SubhanAllah, Alhamdulillah, Allahu Akbar — compteur avec cycles et raccourcis.",
+              desc: "SubhanAllah, Alhamdulillah, Allahu Akbar : compteur avec cycles et raccourcis.",
             },
             {
               mark: '🤲',

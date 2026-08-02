@@ -6,7 +6,7 @@ export default function PhoneFrame({ src, alt }: { src: string; alt: string }) {
       <div className="phone-screen">
         {/* The captures have no real iOS status bar, so reserve a blank strip
             for the Dynamic Island instead of letting it sit on top of the
-            app's own header text — and draw a real one (time, signal, wifi,
+            app's own header text - and draw a real one (time, signal, wifi,
             battery) so the mockup reads as an actual iPhone. */}
         <div className="phone-statusbar">
           <span className="phone-time">9:41</span>

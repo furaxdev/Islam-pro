@@ -40,7 +40,7 @@ export default function TrustSection() {
               >
                 PolyForm Noncommercial
               </a>{' '}
-              — le code est ouvert, l&apos;usage personnel est libre.
+              - le code est ouvert, l&apos;usage personnel est libre.
             </p>
           </Reveal>
         </div>

@@ -28,13 +28,13 @@ const amiri = Amiri({
 });
 
 export const metadata: Metadata = {
-  title: 'Islam Pro — Votre compagnon musulman au quotidien',
+  title: 'Islam Pro : votre compagnon musulman au quotidien',
   description:
     "Horaires de prière précis, Coran, Qibla, Dhikr, calendrier hijri et hadiths. Sans compte, sans publicité, sans traqueur.",
   metadataBase: new URL('https://islampro.app'),
   openGraph: {
     title: 'Islam Pro',
-    description: "Votre compagnon musulman au quotidien — sans compte, sans publicité.",
+    description: "Votre compagnon musulman au quotidien, sans compte et sans publicité.",
     images: ['/og.png'],
   },
 };

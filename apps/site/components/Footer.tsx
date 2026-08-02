@@ -16,9 +16,9 @@ export default function Footer() {
           <div>
             <h4>Sources</h4>
             <ul>
-              <li><a href="https://aladhan.com/prayer-times-api">Aladhan — horaires &amp; calendrier</a></li>
-              <li><a href="https://alquran.cloud/api">AlQuran Cloud — texte &amp; traductions</a></li>
-              <li><a href="https://islamic.network">Islamic Network — récitations audio</a></li>
+              <li><a href="https://aladhan.com/prayer-times-api">Aladhan - horaires &amp; calendrier</a></li>
+              <li><a href="https://alquran.cloud/api">AlQuran Cloud - texte &amp; traductions</a></li>
+              <li><a href="https://islamic.network">Islamic Network - récitations audio</a></li>
             </ul>
           </div>
           <div>
@@ -32,10 +32,10 @@ export default function Footer() {
         </div>
         <div className="footer-bottom">
           <span>
-            © 2026 <strong><a href="https://furax-dev.onrender.com">FuraxDev</a></strong> — PolyForm Noncommercial License 1.0.0
+            © 2026 <strong><a href="https://furax-dev.onrender.com">FuraxDev</a></strong> - PolyForm Noncommercial License 1.0.0
           </span>
           <span>
-            4 sons d&apos;Adhan au choix, tous CC — voir{' '}
+            4 sons d&apos;Adhan au choix, tous CC - voir{' '}
             <a
               href="https://github.com/furaxdev/Islam-pro/blob/main/README.md#crédits"
               style={{ color: 'inherit' }}

@@ -11,7 +11,7 @@ export default function CopyCommand({ command }: { command: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Clipboard API unavailable — the command is still selectable/copyable by hand.
+      // Clipboard API unavailable - the command is still selectable/copyable by hand.
     }
   };
 

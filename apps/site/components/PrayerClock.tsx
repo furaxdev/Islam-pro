@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 
-// Demonstration city — the mobile app itself computes this from the user's
+// Demonstration city. The mobile app itself computes this from the user's
 // own location; the marketing site has no visitor location to work with, so
 // it shows one real, live-fetched reference schedule (Paris) via the same
 // public Aladhan API the app uses, clearly labelled as an example.
@@ -124,7 +124,7 @@ export default function PrayerClock() {
       <div className="clock-status">
         {next ? (
           <>
-            <span className="eyebrow">Prochaine prière{isExample ? ' — exemple, Paris' : ' — Paris'}</span>
+            <span className="eyebrow">Prochaine prière{isExample ? ' - exemple, Paris' : ' - Paris'}</span>
             <p className="clock-next">
               {PRAYER_LABELS[next]} <span className="clock-countdown">{countdown}</span>
             </p>

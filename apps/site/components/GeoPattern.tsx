@@ -1,6 +1,6 @@
 // Quiet ambient texture, not a stock "arabesque" asset: an 8-point star
 // lattice built from two overlapping rotated squares, repeated via an SVG
-// <pattern>. Kept to hairline strokes at low opacity — the visual boldness
+// <pattern>. Kept to hairline strokes at low opacity - the visual boldness
 // of the page is spent on the prayer clock, not here.
 export default function GeoPattern({ className }: { className?: string }) {
   return (
