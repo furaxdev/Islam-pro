@@ -1,3 +1,7 @@
+/**
+ * © FuraxDev — github.com/furaxdev/Islam-pro
+ * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
+ */
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Localization from 'expo-localization';

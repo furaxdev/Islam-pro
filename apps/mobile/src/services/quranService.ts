@@ -1,3 +1,7 @@
+/**
+ * © FuraxDev — github.com/furaxdev/Islam-pro
+ * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
+ */
 import axios from 'axios';
 
 const QURAN_API = 'https://api.alquran.cloud/v1';

@@ -1,3 +1,7 @@
+/**
+ * © FuraxDev — github.com/furaxdev/Islam-pro
+ * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
+ */
 import axios from 'axios';
 // Shared API-contract types live in packages/shared so the API and the app
 // stay in sync. Re-exported here to keep existing local imports working.

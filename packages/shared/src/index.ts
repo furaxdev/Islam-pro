@@ -1,4 +1,8 @@
 /**
+ * © FuraxDev — github.com/furaxdev/Islam-pro
+ * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
+ */
+/**
  * Shared TypeScript types for the Islam Pro monorepo.
  * Imported by both apps/api (Hono backend) and apps/mobile (Expo app),
  * so the API contract stays in sync across the whole codebase.

@@ -1,3 +1,7 @@
+/**
+ * © FuraxDev — github.com/furaxdev/Islam-pro
+ * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
+ */
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import FeatureRow from '@/components/FeatureRow';

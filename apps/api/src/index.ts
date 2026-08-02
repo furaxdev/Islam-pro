@@ -1,3 +1,7 @@
+/**
+ * © FuraxDev — github.com/furaxdev/Islam-pro
+ * Licensed under PolyForm Noncommercial 1.0.0. Sig: 24c0c5cc
+ */
 import 'dotenv/config';
 import { serve } from '@hono/node-server';
 import { Hono } from 'hono';
