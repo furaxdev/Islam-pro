@@ -19,8 +19,8 @@ export default function Home() {
         <FeatureRow
           id="quotidien"
           eyebrow="Chaque jour"
-          title="Trois écrans, cinq prières"
-          lede="Pas de menu à trois niveaux pour trouver l'heure du Maghrib — l'essentiel reste à portée de pouce."
+          title="L'essentiel pour prier, sans se perdre dans les menus"
+          lede="L'heure du Maghrib, la Qibla, le Coran : tout est accessible en un ou deux appuis, pas caché dans trois sous-menus."
           phoneSrc="/screens/prayer.png"
           phoneAlt="Écran des horaires de prière dans Islam Pro"
           items={[
@@ -45,8 +45,8 @@ export default function Home() {
         <FeatureRow
           id="explorer"
           eyebrow="Explorer"
-          title="Le calendrier hijri, sans le chercher"
-          lede="Les événements du mois, une image du jour, et les 99 Noms d'Allah à portée d'un même onglet."
+          title="Le calendrier hijri et les 99 Noms d'Allah"
+          lede="Un onglet pour retrouver les événements du mois, une image du jour et les 99 Noms, sans jongler entre plusieurs apps."
           phoneSrc="/screens/calendar.png"
           phoneAlt="Calendrier hijri dans Islam Pro"
           reverse
@@ -72,8 +72,8 @@ export default function Home() {
         <FeatureRow
           id="outils"
           eyebrow="Outils & guides"
-          title="Le tasbih qui se souvient où vous en étiez"
-          lede="Un compteur de dhikr avec anneau de progression, les douas classées par occasion, et les gestes de la salah et du wudu expliqués pas à pas."
+          title="Un tasbih qui garde votre progression, et des guides pour le reste"
+          lede="Le compteur de dhikr retient où vous en étiez, les douas sont classées par occasion, et les guides salah / wudu détaillent chaque étape."
           phoneSrc="/screens/tasbih.png"
           phoneAlt="Compteur de dhikr Tasbih dans Islam Pro"
           items={[

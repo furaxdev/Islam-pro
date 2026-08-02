@@ -19,7 +19,7 @@ export default function Download() {
             <span className="eyebrow">Télécharger</span>
             <h2 className="section-heading">Sur votre téléphone ou votre ordinateur</h2>
             <p className="section-lede">
-              Le code est le même partout — seule la manière de l&apos;installer change.
+              Même app, même code source, quatre façons différentes de l&apos;installer selon votre appareil.
             </p>
           </Reveal>
         </div>

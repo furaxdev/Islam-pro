@@ -12,15 +12,15 @@ export default function Hero() {
       </div>
       <div className="hero-glow" />
       <div className="wrap hero-inner">
-        <span className="eyebrow">Votre compagnon musulman au quotidien</span>
+        <span className="eyebrow">Application musulmane gratuite</span>
         <h1 className="hero-title">
-          Le temps de vos prières,
+          Les horaires de prière,
           <br />
-          jamais <em>approximatif</em>.
+          calculés pour <em>votre</em> position.
         </h1>
         <p className="hero-sub">
-          Coran, Qibla, Dhikr, calendrier hijri et hadiths — dans une app rapide,
-          sans compte, sans publicité et sans traqueur.
+          Coran, Qibla, Dhikr, calendrier hijri et hadiths dans une seule app.
+          Pas de compte à créer, pas de pub, et on ne collecte pas vos données.
         </p>
         <div className="hero-cta">
           <a className="btn btn-gold" href={APK_URL}>

@@ -9,8 +9,8 @@ export default function Footer() {
               Islam Pro
             </a>
             <p style={{ color: 'var(--ink-dim)', fontSize: '0.9rem', maxWidth: '22rem' }}>
-              Horaires de prière, Coran, Qibla, Dhikr et calendrier hijri — sans
-              compte, sans publicité, sans traqueur.
+              Horaires de prière, Coran, Qibla, Dhikr et calendrier hijri, dans une
+              app qui ne demande ni compte ni argent.
             </p>
           </div>
           <div>
