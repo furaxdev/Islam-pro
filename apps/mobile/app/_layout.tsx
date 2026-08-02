@@ -5,6 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import AppLaunchSplash from '../src/components/AppLaunchSplash';
 import { configureNotifications } from '../src/services/notificationService';
+import { useIsInstalledPWA } from '../src/utils/pwa';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 // `fade` is honored on iOS only; Android/Web get an instant hide from the
@@ -16,6 +17,13 @@ function RootLayoutNav() {
   const { isReady, darkMode } = useApp();
   const [showLaunchSplash, setShowLaunchSplash] = useState(true);
   const [nativeSplashHidden, setNativeSplashHidden] = useState(false);
+  const isInstalledPWA = useIsInstalledPWA();
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.title = isInstalledPWA ? 'Islam Pro - Version Mobile Web' : 'Islam Pro';
+    }
+  }, [isInstalledPWA]);
 
   useEffect(() => {
     // Hide the native splash only once our own overlay has painted a frame

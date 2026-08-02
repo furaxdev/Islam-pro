@@ -119,6 +119,7 @@ export const translations = {
     clearCacheDesc: "Libérer de l'espace",
     appDescription:
       'Application complète pour les musulmans : horaires de prière, Coran, hadiths, podcasts et bien plus.',
+    webVersionLabel: 'Version Mobile Web',
     adhanCredit: "Son de l'Adhan",
     featuresTitle: 'Fonctionnalités',
     support: 'Support',
@@ -273,6 +274,7 @@ export const translations = {
     clearCacheDesc: 'تحرير مساحة',
     appDescription:
       'تطبيق شامل للمسلمين: مواقيت الصلاة، القرآن، الأحاديث، البودكاست والمزيد.',
+    webVersionLabel: 'نسخة الويب للجوال',
     adhanCredit: 'صوت الأذان',
     featuresTitle: 'الميزات',
     support: 'الدعم',
@@ -427,6 +429,7 @@ export const translations = {
     clearCacheDesc: 'Free up space',
     appDescription:
       'A complete app for Muslims: prayer times, Quran, hadiths, podcasts and much more.',
+    webVersionLabel: 'Mobile Web Version',
     adhanCredit: 'Adhan sound',
     featuresTitle: 'Features',
     support: 'Support',

@@ -21,6 +21,7 @@ import { Language } from '../src/i18n/translations';
 import Touchable from '../src/components/Touchable';
 import { applyPrayerNotifications, sendTestNotification } from '../src/services/notificationService';
 import { ADHAN_SOUNDS, getAdhanSound } from '../src/data/adhanSounds';
+import { useIsInstalledPWA } from '../src/utils/pwa';
 
 const LANGUAGES: { code: Language; name: string; nativeName: string }[] = [
   { code: 'fr', name: 'French', nativeName: 'Français' },
@@ -54,6 +55,7 @@ const RECITERS = [
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const isInstalledPWA = useIsInstalledPWA();
   const {
     t,
     darkMode,
@@ -478,7 +480,9 @@ export default function SettingsScreen() {
                 <Ionicons name="moon" size={32} color={colors.gold} />
               </Touchable>
               <Text style={[styles.appName, { color: textColor }]}>Islam Pro</Text>
-              <Text style={[styles.appVersion, { color: textSecondary }]}>Version 1.0.0</Text>
+              <Text style={[styles.appVersion, { color: textSecondary }]}>
+                {isInstalledPWA ? t('webVersionLabel') : 'Version 1.0.0'}
+              </Text>
               <Text style={[styles.appDescription, { color: textSecondary }]}>
                 {t('appDescription')}
               </Text>
