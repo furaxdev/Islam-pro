@@ -1,6 +1,7 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fraunces, Public_Sans, IBM_Plex_Mono, Amiri } from 'next/font/google';
 import './globals.css';
+import RegisterSW from '@/components/RegisterSW';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -37,12 +38,30 @@ export const metadata: Metadata = {
     description: "Votre compagnon musulman au quotidien, sans compte et sans publicité.",
     images: ['/og.png'],
   },
+  icons: {
+    icon: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'Islam Pro',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0a1612',
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable} ${amiri.variable}`}>
-      <body>{children}</body>
+      <body>
+        {children}
+        <RegisterSW />
+      </body>
     </html>
   );
 }
