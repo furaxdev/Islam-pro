@@ -4,13 +4,31 @@ import type { PropsWithChildren } from "react";
 
 export default function Root({ children }: PropsWithChildren) {
   return (
-    <html lang="en" style={{ height: "100%" }}>
+    <html lang="fr" style={{ height: "100%" }}>
       <head>
         <meta charSet="utf-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#0A1612" />
+        <link rel="icon" href="/icon-192.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="Islam Pro" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function () {
+                  navigator.serviceWorker.register('/sw.js').catch(function () {});
+                });
+              }
+            `,
+          }}
         />
         {/*
           Disable body scrolling on web to make ScrollView components work correctly.
