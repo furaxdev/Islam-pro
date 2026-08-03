@@ -1,0 +1,36 @@
+name: Export Web Build
+
+# Manual only — runs `expo export -p web` on GitHub's runners instead of
+# locally, since the Metro bundle/minify pass is heavy enough to peg an
+# older Mac's CPU. Trigger from the Actions tab, or:
+# gh workflow run export-web.yml
+on:
+  workflow_dispatch:
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Export the web build
+        working-directory: apps/mobile
+        run: pnpm exec expo export --platform web
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: islam-pro-web-export
+          path: apps/mobile/dist
+          retention-days: 14
