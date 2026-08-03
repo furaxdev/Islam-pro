@@ -29,7 +29,6 @@ export default function MoreScreen() {
     {
       title: t('exploreSection'),
       items: [
-        { key: 'podcasts', label: t('podcasts'), icon: 'headset', color: colors.info, route: '/(tabs)/audio' },
         { key: 'calendar', label: t('calendar'), icon: 'calendar', color: colors.gold, route: '/(tabs)/calendar' },
         { key: 'asma', label: t('asmaulHusna'), icon: 'sparkles', color: colors.isha, route: '/asma' },
       ],
