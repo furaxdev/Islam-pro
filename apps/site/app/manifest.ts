@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: 'Islam Pro',
     description:
       'Horaires de prière, Coran, Qibla, Dhikr et calendrier hijri. Sans compte, sans publicité, sans traqueur.',
-    start_url: '/?pwa=1',
+    start_url: '/',
     display: 'standalone',
     background_color: '#0a1612',
     theme_color: '#0a1612',

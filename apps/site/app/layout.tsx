@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Fraunces, Public_Sans, IBM_Plex_Mono, Amiri } from 'next/font/google';
 import './globals.css';
 import RegisterSW from '@/components/RegisterSW';
-import PwaAppRedirect from '@/components/PwaAppRedirect';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -60,7 +59,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${fraunces.variable} ${publicSans.variable} ${plexMono.variable} ${amiri.variable}`}>
       <body>
-        <PwaAppRedirect />
         {children}
         <RegisterSW />
       </body>
