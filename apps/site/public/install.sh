@@ -16,7 +16,11 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 echo "Adding the Islam Pro APT repository (Cloudsmith)..."
-curl -1sLf 'https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh' | bash
+# Packages are only published for the "jammy" (22.04) codename in the
+# Cloudsmith repo, but the .deb itself works fine on newer Ubuntu releases.
+# Force that codename so auto-detection of a newer release (e.g. 24.04,
+# 26.04...) doesn't 404 against a codename Cloudsmith has no packages for.
+curl -1sLf 'https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh' | distro=ubuntu codename=jammy bash
 
 echo "Installing islam-pro..."
 apt-get install -y islam-pro
