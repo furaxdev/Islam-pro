@@ -14,13 +14,16 @@ Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
   — ouvre ce lien depuis le téléphone, installe l'APK (autorise « sources inconnues » si demandé).
 
 <br>
+
 - <a href="https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="macOS" valign="middle"></a> **macOS (.dmg)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro.Installer.dmg)
   — app non signée Apple : au premier lancement, **clic droit sur l'app → Ouvrir → Ouvrir**
   (voir [App Desktop (Tauri)](#app-desktop-tauri) pour le générer soi-même).
 <br>
+
 - 🪟 **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
   — app non signée Microsoft : si SmartScreen avertit, **Informations complémentaires → Exécuter quand même**.
 <br>
+
 - <a href="https://dl.cloudsmith.io/public/furax-dev/islam-pro/deb/ubuntu/jammy/"><img src="https://cdn.simpleicons.org/ubuntu/E95420" width="18" height="18" alt="Linux" valign="middle"></a> **Linux (Ubuntu/Debian)** : une seule commande (ajoute le dépôt APT + installe) :
   ```bash
   curl -fsSL https://islam-pro.vercel.app/install | sudo -E bash
@@ -29,6 +32,7 @@ Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
   `.deb` : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
   (`sudo apt install ./islam-pro.deb`).
 <br>
+
 - <a href="#déploiement"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="iOS" valign="middle"></a> **iOS** : build EAS à venir (nécessite un compte Apple Developer).
 
 > Le lien de l'APK provient d'EAS Build et peut expirer au bout de ~30 jours ;
