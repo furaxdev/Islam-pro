@@ -28,8 +28,8 @@ Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
   curl -fsSL https://islam-pro.vercel.app/install | sudo -E bash
   ```
   Mises à jour ensuite via sudo apt update && sudo apt upgrade. Ou juste le fichier
-  .deb : télécharger la dernière version (https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
-  (sudo apt install ./islam-pro.deb).
+  .deb : télécharger la dernière version [Islam-pro.deb](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_amd64.deb)
+  ``sudo apt install ./islam-pro.deb``.
 <br>
 
 - <a href="#déploiement"><img src="https://cdn.simpleicons.org/apple/888888" width="18" height="18" alt="iOS" valign="middle"></a> iOS : build EAS à venir (nécessite un compte Apple Developer).
