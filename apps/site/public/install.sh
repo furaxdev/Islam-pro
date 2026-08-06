@@ -16,11 +16,13 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 echo "Adding the Islam Pro APT repository (Cloudsmith)..."
-# Packages are only published for the "jammy" (22.04) codename in the
-# Cloudsmith repo, but the .deb itself works fine on newer Ubuntu releases.
-# Force that codename so auto-detection of a newer release (e.g. 24.04,
-# 26.04...) doesn't 404 against a codename Cloudsmith has no packages for.
-curl -1sLf 'https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh' | distro=ubuntu codename=jammy bash
+# Packages are only published for Ubuntu 22.04 "jammy" in the Cloudsmith
+# repo, but the .deb itself works fine on newer Ubuntu releases. Force all
+# three of distro/version/codename together (not just codename) so a
+# newer host release (24.04, 26.04...) doesn't leave the script mixing an
+# overridden codename with an auto-detected version, which Cloudsmith
+# doesn't recognise and silently fails to configure a working repo for.
+curl -1sLf 'https://dl.cloudsmith.io/public/furax-dev/islam-pro/setup.deb.sh' | distro=ubuntu version=22.04 codename=jammy bash
 
 echo "Installing islam-pro..."
 apt-get install -y islam-pro
