@@ -19,7 +19,7 @@ Site vitrine : **[islam-pro.vercel.app](https://islam-pro.vercel.app)**
   (voir [App Desktop (Tauri)](#app-desktop-tauri) pour le générer soi-même).
 <br>
 
-- <img src="https://cdn.jsdelivr.net/npm/@mdi/svg@latest/svg/microsoft-windows.svg" width="18" height="18" alt="Windows"> **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#0078D4" style="vertical-align:middle" role="img" aria-label="Windows"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351"/></svg> **Windows (.exe)** : [télécharger la dernière version](https://github.com/furaxdev/Islam-pro/releases/download/desktop-latest/Islam.Pro_1.0.0_x64-setup.exe)
   — app non signée Microsoft : si SmartScreen avertit, **Informations complémentaires → Exécuter quand même**.
 <br>
 
