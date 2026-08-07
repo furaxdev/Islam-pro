@@ -70,6 +70,14 @@ export function getNextPrayer(timings: PrayerTimes): { name: string; time: strin
   };
 }
 
+// Jumu'ah replaces Dhuhr on Fridays, but its actual start time is set by
+// each mosque, not calculable from a location like the other prayers — so
+// this only tells callers WHEN to apply a user-provided override, never a
+// time itself.
+export function isJumuaDay(date: Date = new Date()): boolean {
+  return date.getDay() === 5;
+}
+
 export function formatMinutesLeft(minutes: number): string {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;

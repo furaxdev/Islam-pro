@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   Switch,
+  TextInput,
   Alert,
   Linking,
   Platform,
@@ -76,8 +77,11 @@ export default function SettingsScreen() {
     setAdhanSound,
     adhanSoundId,
     setAdhanSoundId,
+    jumuaTime,
+    setJumuaTime,
   } = useApp();
 
+  const [jumuaInput, setJumuaInput] = React.useState(jumuaTime || '');
   const [showMethodPicker, setShowMethodPicker] = React.useState(false);
   const [showReciterPicker, setShowReciterPicker] = React.useState(false);
   const [showAdhanPicker, setShowAdhanPicker] = React.useState(false);
@@ -105,6 +109,25 @@ export default function SettingsScreen() {
   const handleAdhanSoundIdChange = async (id: string) => {
     setAdhanSoundId(id);
     await applyPrayerNotifications(t, prayerNotifications, adhanSound, undefined, id);
+  };
+
+  const handleJumuaTimeSave = () => {
+    const trimmed = jumuaInput.trim();
+    if (!trimmed) {
+      setJumuaTime(null);
+      return;
+    }
+    // Accept "H:MM" or "HH:MM", 24h — reject anything else rather than
+    // silently saving a value the Friday prayer list can't parse.
+    const match = /^([01]?\d|2[0-3]):([0-5]\d)$/.exec(trimmed);
+    if (!match) {
+      Alert.alert(t('jumuaTimeLabel'), t('jumuaTimePlaceholder'));
+      setJumuaInput(jumuaTime || '');
+      return;
+    }
+    const normalized = `${match[1].padStart(2, '0')}:${match[2]}`;
+    setJumuaInput(normalized);
+    setJumuaTime(normalized);
   };
 
   const stopPreview = async () => {
@@ -342,7 +365,10 @@ export default function SettingsScreen() {
               <Ionicons name="chevron-forward" size={20} color={textSecondary} />
             </Touchable>
 
-            <Touchable style={styles.option} onPress={() => setShowMethodPicker(true)}>
+            <Touchable
+              style={[styles.option, styles.optionBorder, { borderBottomColor: bgColor }]}
+              onPress={() => setShowMethodPicker(true)}
+            >
               <View style={styles.optionContent}>
                 <View style={styles.optionIconRow}>
                   <Ionicons name="calculator" size={20} color={colors.info} />
@@ -354,6 +380,30 @@ export default function SettingsScreen() {
               </View>
               <Ionicons name="chevron-forward" size={20} color={textSecondary} />
             </Touchable>
+
+            <View style={styles.option}>
+              <View style={styles.optionContent}>
+                <View style={styles.optionIconRow}>
+                  <Ionicons name="people" size={20} color={colors.gold} />
+                  <Text style={[styles.optionText, { color: textColor }]}>{t('jumuaTimeLabel')}</Text>
+                </View>
+                <Text style={[styles.optionSubtext, { color: textSecondary }]}>
+                  {t('jumuaTimeDesc')}
+                </Text>
+              </View>
+              <TextInput
+                style={[styles.jumuaInput, { color: textColor, borderColor: bgColor }]}
+                placeholder={t('jumuaTimePlaceholder')}
+                placeholderTextColor={textSecondary}
+                value={jumuaInput}
+                onChangeText={setJumuaInput}
+                onBlur={handleJumuaTimeSave}
+                onSubmitEditing={handleJumuaTimeSave}
+                keyboardType={Platform.OS === 'ios' ? 'numbers-and-punctuation' : 'default'}
+                maxLength={5}
+                returnKeyType="done"
+              />
+            </View>
           </View>
         </View>
 
@@ -667,6 +717,15 @@ const styles = StyleSheet.create({
   // names) still align left like the other rows instead of jumping to the edge.
   optionText: { fontSize: 16, fontWeight: '500', textAlign: 'left', writingDirection: 'ltr' },
   optionSubtext: { fontSize: 13, marginTop: 2, marginLeft: 28, textAlign: 'left', writingDirection: 'ltr' },
+  jumuaInput: {
+    borderWidth: 1,
+    borderRadius: borderRadius.sm,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 6,
+    fontSize: 16,
+    minWidth: 64,
+    textAlign: 'center',
+  },
   fontSizeButtons: { flexDirection: 'row', gap: spacing.xs },
   fontSizeButton: {
     width: 36,

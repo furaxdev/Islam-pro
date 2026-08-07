@@ -37,6 +37,8 @@ interface AppContextType {
   setAdhanSound: (value: boolean) => void;
   adhanSoundId: string;
   setAdhanSoundId: (value: string) => void;
+  jumuaTime: string | null;
+  setJumuaTime: (value: string | null) => void;
   isReady: boolean;
 }
 
@@ -53,6 +55,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [prayerNotifications, setPrayerNotificationsState] = useState(true);
   const [adhanSound, setAdhanSoundState] = useState(true);
   const [adhanSoundId, setAdhanSoundIdState] = useState('mecca');
+  const [jumuaTime, setJumuaTimeState] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -73,6 +76,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const savedPrayerNotifications = await AsyncStorage.getItem('prayerNotifications');
       const savedAdhanSound = await AsyncStorage.getItem('adhanSound');
       const savedAdhanSoundId = await AsyncStorage.getItem('adhanSoundId');
+      const savedJumuaTime = await AsyncStorage.getItem('jumuaTime');
 
       if (savedLang) {
         setLanguageState(savedLang as Language);
@@ -117,6 +121,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
       if (savedAdhanSoundId) {
         setAdhanSoundIdState(savedAdhanSoundId);
+      }
+
+      if (savedJumuaTime) {
+        setJumuaTimeState(savedJumuaTime);
       }
     } catch (error) {
       console.error('Error loading settings:', error);
@@ -168,6 +176,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     await AsyncStorage.setItem('adhanSoundId', value);
   };
 
+  const setJumuaTime = async (value: string | null) => {
+    setJumuaTimeState(value);
+    if (value) {
+      await AsyncStorage.setItem('jumuaTime', value);
+    } else {
+      await AsyncStorage.removeItem('jumuaTime');
+    }
+  };
+
   const saveLocation = async (loc: Location | null) => {
     setLocation(loc);
     if (loc) {
@@ -208,6 +225,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setAdhanSound,
         adhanSoundId,
         setAdhanSoundId,
+        jumuaTime,
+        setJumuaTime,
         isReady,
       }}
     >

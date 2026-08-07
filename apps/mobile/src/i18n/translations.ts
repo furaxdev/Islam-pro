@@ -34,6 +34,7 @@ export const translations = {
     fajr: 'Fajr',
     sunrise: 'Lever du soleil',
     dhuhr: 'Dhuhr',
+    jumua: 'Joumou\'a',
     asr: 'Asr',
     maghrib: 'Maghrib',
     isha: 'Isha',
@@ -98,6 +99,9 @@ export const translations = {
 
     // Settings screen
     prayerSettings: 'Paramètres de prière',
+    jumuaTimeLabel: 'Horaire de la Joumou\'a',
+    jumuaTimeDesc: "Le Dhuhr calculé n'est pas toujours l'heure de la Joumou'a — renseigne l'horaire annoncé par ta mosquée pour l'afficher à la place le vendredi.",
+    jumuaTimePlaceholder: 'ex. 13:30',
     adhanChoice: "Choix de l'Adhan",
     prayerNotifications: 'Notifications de prière',
     prayerNotificationsDesc: 'Rappels avant chaque prière',
@@ -189,6 +193,7 @@ export const translations = {
     fajr: 'الفجر',
     sunrise: 'الشروق',
     dhuhr: 'الظهر',
+    jumua: 'الجمعة',
     asr: 'العصر',
     maghrib: 'المغرب',
     isha: 'العشاء',
@@ -253,6 +258,9 @@ export const translations = {
 
     // Settings screen
     prayerSettings: 'إعدادات الصلاة',
+    jumuaTimeLabel: 'وقت صلاة الجمعة',
+    jumuaTimeDesc: 'وقت الظهر المحسوب ليس دائمًا وقت صلاة الجمعة — أدخل الوقت الذي يعلنه مسجدك ليظهر بدلاً منه يوم الجمعة.',
+    jumuaTimePlaceholder: 'مثال: 13:30',
     adhanChoice: 'اختيار الأذان',
     prayerNotifications: 'إشعارات الصلاة',
     prayerNotificationsDesc: 'تذكير قبل كل صلاة',
@@ -344,6 +352,7 @@ export const translations = {
     fajr: 'Fajr',
     sunrise: 'Sunrise',
     dhuhr: 'Dhuhr',
+    jumua: "Jumu'ah",
     asr: 'Asr',
     maghrib: 'Maghrib',
     isha: 'Isha',
@@ -408,6 +417,9 @@ export const translations = {
 
     // Settings screen
     prayerSettings: 'Prayer settings',
+    jumuaTimeLabel: "Jumu'ah time",
+    jumuaTimeDesc: "The calculated Dhuhr isn't always the actual Jumu'ah time — enter the time your mosque announces to show that instead on Fridays.",
+    jumuaTimePlaceholder: 'e.g. 13:30',
     adhanChoice: 'Adhan choice',
     prayerNotifications: 'Prayer notifications',
     prayerNotificationsDesc: 'Reminders before each prayer',

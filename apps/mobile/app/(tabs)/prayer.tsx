@@ -18,6 +18,7 @@ import { colors, spacing, borderRadius, shadows } from '../../src/constants/them
 import {
   getPrayerTimesByCoords,
   getNextPrayer,
+  isJumuaDay,
   PrayerTimes,
   HijriDate,
 } from '../../src/services/prayerService';
@@ -76,7 +77,7 @@ const POPULAR_CITIES = [
 ];
 
 export default function PrayerScreen() {
-  const { t, darkMode, language, location, setLocation, prayerNotifications, adhanSound, adhanSoundId } = useApp();
+  const { t, darkMode, language, location, setLocation, prayerNotifications, adhanSound, adhanSoundId, jumuaTime } = useApp();
   const [loading, setLoading] = useState(true);
   const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
   const [hijriDate, setHijriDate] = useState<HijriDate | null>(null);
@@ -204,14 +205,25 @@ export default function PrayerScreen() {
     }
   };
 
+  // Jumu'ah replaces Dhuhr on Fridays. Its own name/time (from the user's
+  // mosque, when they've set one) only override the DISPLAY here — the
+  // underlying entry keeps `name: 'Dhuhr'` so "next prayer" matching against
+  // getNextPrayer() (which has no concept of Jumu'ah) still lines up.
+  const showJumua = isJumuaDay();
   const prayersList = prayerTimes
     ? [
-        { name: 'Fajr', time: prayerTimes.Fajr, icon: 'moon', color: colors.fajr },
-        { name: 'Sunrise', time: prayerTimes.Sunrise, icon: 'sunny', color: colors.sunrise },
-        { name: 'Dhuhr', time: prayerTimes.Dhuhr, icon: 'sunny', color: colors.dhuhr },
-        { name: 'Asr', time: prayerTimes.Asr, icon: 'partly-sunny', color: colors.asr },
-        { name: 'Maghrib', time: prayerTimes.Maghrib, icon: 'cloudy-night', color: colors.maghrib },
-        { name: 'Isha', time: prayerTimes.Isha, icon: 'moon', color: colors.isha },
+        { name: 'Fajr', displayName: 'Fajr', time: prayerTimes.Fajr, icon: 'moon', color: colors.fajr },
+        { name: 'Sunrise', displayName: 'Sunrise', time: prayerTimes.Sunrise, icon: 'sunny', color: colors.sunrise },
+        {
+          name: 'Dhuhr',
+          displayName: showJumua ? 'Jumua' : 'Dhuhr',
+          time: showJumua && jumuaTime ? jumuaTime : prayerTimes.Dhuhr,
+          icon: 'sunny',
+          color: colors.dhuhr,
+        },
+        { name: 'Asr', displayName: 'Asr', time: prayerTimes.Asr, icon: 'partly-sunny', color: colors.asr },
+        { name: 'Maghrib', displayName: 'Maghrib', time: prayerTimes.Maghrib, icon: 'cloudy-night', color: colors.maghrib },
+        { name: 'Isha', displayName: 'Isha', time: prayerTimes.Isha, icon: 'moon', color: colors.isha },
       ]
     : [];
 
@@ -233,6 +245,7 @@ export default function PrayerScreen() {
       Fajr: t('fajr'),
       Sunrise: t('sunrise'),
       Dhuhr: t('dhuhr'),
+      Jumua: t('jumua'),
       Asr: t('asr'),
       Maghrib: t('maghrib'),
       Isha: t('isha'),
@@ -319,7 +332,7 @@ export default function PrayerScreen() {
                   </View>
                   <View style={styles.prayerInfo}>
                     <Text style={[styles.prayerName, { color: textColor }]}>
-                      {getPrayerNameTranslation(prayer.name)}
+                      {getPrayerNameTranslation(prayer.displayName)}
                     </Text>
                     {isNext && (
                       <Text style={[styles.nextBadge, { color: colors.gold }]}>

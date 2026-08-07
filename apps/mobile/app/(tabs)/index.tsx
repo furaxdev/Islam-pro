@@ -18,6 +18,7 @@ import {
   getPrayerTimesByCoords,
   getNextPrayer,
   formatMinutesLeft,
+  isJumuaDay,
   PrayerTimes,
   HijriDate,
 } from '../../src/services/prayerService';
@@ -30,7 +31,7 @@ import { withTimeout } from '../../src/utils/withTimeout';
 import { selectable } from '../../src/utils/selectable';
 
 export default function HomeScreen() {
-  const { t, darkMode, language, setLocation: saveLocation } = useApp();
+  const { t, darkMode, language, setLocation: saveLocation, jumuaTime } = useApp();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -137,12 +138,20 @@ export default function HomeScreen() {
     const translations: Record<string, string> = {
       Fajr: t('fajr'),
       Dhuhr: t('dhuhr'),
+      Jumua: t('jumua'),
       Asr: t('asr'),
       Maghrib: t('maghrib'),
       Isha: t('isha'),
     };
     return translations[name] || name;
   };
+
+  // Jumu'ah replaces Dhuhr on Fridays for display purposes only — see the
+  // same override on the Prayer tab for why `nextPrayer.name` itself stays
+  // 'Dhuhr' under the hood.
+  const isDhuhrOnFriday = nextPrayer?.name === 'Dhuhr' && isJumuaDay();
+  const displayPrayerName = isDhuhrOnFriday ? 'Jumua' : nextPrayer?.name;
+  const displayPrayerTime = isDhuhrOnFriday && jumuaTime ? jumuaTime : nextPrayer?.time;
 
   if (loading) {
     return <LoadingSplash darkMode={darkMode} label={t('loading')} />;
@@ -205,9 +214,9 @@ export default function HomeScreen() {
             <View style={styles.nextPrayerContent}>
               <Text style={styles.nextPrayerLabel}>{t('nextPrayer')}</Text>
               <Text style={styles.nextPrayerName}>
-                {getPrayerNameTranslation(nextPrayer.name)}
+                {getPrayerNameTranslation(displayPrayerName!)}
               </Text>
-              <Text style={styles.nextPrayerTime}>{nextPrayer.time}</Text>
+              <Text style={styles.nextPrayerTime}>{displayPrayerTime}</Text>
             </View>
             <View style={styles.countdownContainer}>
               <Text style={styles.countdownLabel}>{t('inMinutes')}</Text>
